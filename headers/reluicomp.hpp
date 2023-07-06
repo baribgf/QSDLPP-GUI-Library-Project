@@ -7,10 +7,10 @@ class RelativeUIComponent : public UIComponent
 protected:
     int relX;
     int relY;
-    RelativeUIComponent *parent;
+    UIComponent *parent;
 
 public:
-    RelativeUIComponent(RelativeUIComponent *parent, Uint16 width, Uint16 height, SDL_Color fillColor = {WHITE});
+    RelativeUIComponent(UIComponent *parent, Uint16 width, Uint16 height, SDL_Color fillColor = {WHITE});
     ~RelativeUIComponent();
 
     SDL_Rect visibleArea;
@@ -31,5 +31,5 @@ public:
 
     bool insideBounds(int x, int y) override;
 
-    RelativeUIComponent *getParent();
+    UIComponent *getParent();
 };

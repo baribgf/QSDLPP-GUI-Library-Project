@@ -6,7 +6,7 @@ Label::Label(RelativeUIComponent *parent, string text, int width, int height, SD
     this->textY = 0;
     this->alignType = Align::NORTH_WEST;
     this->bordersVisible = false;
-    this->FONT_PATH = "../resources/JetBrainsMono-Regular.ttf";
+    this->FONT_PATH = "/usr/share/fonts/JetBrains/ttf/JetBrainsMono-Regular.ttf";
     this->DEFAULT_BG = toSDLColor(WHITE);
     this->DEFAULT_FG = toSDLColor(BLACK);
     this->DEFAULT_BORDER_COLOR = toSDLColor(BLACK);
@@ -109,6 +109,7 @@ void Label::setTextAlign(Align a)
 void Label::setText(string text)
 {
     this->text = text;
+    this->update(text, this->ptSize, this->fg);
 }
 
 void Label::update(string text, Uint8 ptSize, SDL_Color fg)

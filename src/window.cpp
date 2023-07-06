@@ -143,7 +143,7 @@ void Window::renderComponent(UIComponent *uicomponent)
     RelativeUIComponent *relUiComp = dynamic_cast<RelativeUIComponent *>(uicomponent);
     if (relUiComp)
     {
-        RelativeUIComponent *relUiCompParent = relUiComp->getParent();
+        RelativeUIComponent *relUiCompParent = dynamic_cast<RelativeUIComponent *>(relUiComp->getParent());
         if (relUiCompParent)
         {
             int parx = relUiCompParent->visibleArea.x;

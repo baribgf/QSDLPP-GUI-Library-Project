@@ -1,6 +1,6 @@
 #include "../headers/reluicomp.hpp"
 
-RelativeUIComponent::RelativeUIComponent(RelativeUIComponent *parent, Uint16 width, Uint16 height, SDL_Color fillColor) : UIComponent(width, height, fillColor)
+RelativeUIComponent::RelativeUIComponent(UIComponent *parent, Uint16 width, Uint16 height, SDL_Color fillColor) : UIComponent(width, height, fillColor)
 {
     this->parent = parent;
     this->updateVisibleArea(this->getAbsPosition().x, this->getAbsPosition().y, this->getSize().w, this->getSize().h);
@@ -11,7 +11,7 @@ SDL_Point RelativeUIComponent::getPosition()
     return {this->relX, this->relY};
 }
 
-RelativeUIComponent *RelativeUIComponent::getParent()
+UIComponent *RelativeUIComponent::getParent()
 {
     return this->parent;
 }
@@ -21,7 +21,11 @@ bool RelativeUIComponent::insideBounds(int x, int y)
     if (this->getAbsPosition().x <= x && x <= this->getAbsPosition().x + this->getSize().w && this->getAbsPosition().y <= y && y <= this->getAbsPosition().y + this->getSize().h)
     {
         if (this->getParent())
-            return (this->getParent()->visibleArea.x <= x && x <= this->getParent()->visibleArea.x + this->getParent()->visibleArea.w && this->getParent()->visibleArea.y <= y && y <= this->getParent()->visibleArea.y + this->getParent()->visibleArea.h);
+        {
+            RelativeUIComponent *parent = dynamic_cast<RelativeUIComponent *>(this->getParent());
+            if (parent)
+                return (parent->visibleArea.x <= x && x <= parent->visibleArea.x + parent->visibleArea.w && parent->visibleArea.y <= y && y <= parent->visibleArea.y + parent->visibleArea.h);
+        }
        return true;
     }
     return false;
