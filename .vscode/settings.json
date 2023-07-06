@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.embeddedhtml": "html",
+        "iostream": "cpp",
+        "vector": "cpp"
+    },
+    "cmake.configureOnOpen": false
+}

@@ -1,0 +1,239 @@
+#include "../headers/window.hpp"
+
+Window::Window(string title, int width, int height, bool fullscreen, bool centered)
+{
+    this->FPS = 90;
+    this->frameDelay = 1000 / this->FPS;
+    this->running = true;
+    this->thereWasPendingEvent = false;
+
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER);
+    TTF_Init();
+
+    SDL_DisplayMode dm;
+    SDL_GetCurrentDisplayMode(0, &dm);
+
+    int x = centered ? SDL_WINDOWPOS_CENTERED : randint(0, dm.w - width);
+    int y = centered ? SDL_WINDOWPOS_CENTERED : randint(0, dm.h - height);
+
+    this->baseWindow = SDL_CreateWindow(title.c_str(), x, y, width, height, (fullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN) | SDL_WINDOW_RESIZABLE);
+    this->mainRenderer = SDL_CreateRenderer(this->baseWindow, -1, 0);
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+}
+
+void Window::handleEvents()
+{
+    Event e = toEvent(this->event);
+    
+    if (event.type == SDL_QUIT)
+        this->running = false;
+
+    else if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+        this->onWindowResized(e);
+}
+
+void Window::mainloop()
+{
+    if (SDL_PollEvent(&this->event))
+    {
+        this->thereWasPendingEvent = true;
+        this->handleEvents();
+    }
+    else
+    {
+        this->thereWasPendingEvent = false;
+    }
+
+    SDL_SetRenderDrawColor(this->mainRenderer, WHITE);
+    SDL_RenderClear(this->mainRenderer);
+
+    // do here ..
+
+    for (Frame *frame : this->frames)
+    {
+        this->renderFrame(frame);
+    }
+
+    SDL_RenderPresent(this->mainRenderer);
+}
+
+void Window::exec()
+{
+    while (this->running)
+    {
+        int frameStart = SDL_GetTicks();
+
+        this->mainloop();
+
+        int frameTime = SDL_GetTicks() - frameStart;
+        if (frameTime < frameDelay)
+            SDL_Delay(frameDelay - frameTime);
+    }
+}
+
+SDL_Point Window::getPosition()
+{
+    SDL_Point p;
+    SDL_GetWindowPosition(this->baseWindow, &p.x, &p.y);
+    return p;
+}
+
+SDL_Size Window::getSize()
+{
+    int w, h;
+    SDL_GetWindowSize(this->baseWindow, &w, &h);
+    return {(Uint16)w, (Uint16)h};
+}
+
+Uint16 Window::getFPS()
+{
+    return this->FPS;
+}
+
+void Window::setSize(Uint16 width, Uint16 height)
+{
+    SDL_SetWindowSize(this->baseWindow, width, height);
+}
+
+void Window::setPosition(int x, int y)
+{
+    SDL_SetWindowPosition(this->baseWindow, x, y);
+}
+
+void Window::setCentered()
+{
+    this->setPosition(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+}
+
+void Window::setFPS(Uint16 fps)
+{
+    this->FPS = fps;
+    this->frameDelay = 1000 / this->FPS;
+}
+
+void Window::renderComponent(UIComponent *uicomponent)
+{
+    if (!uicomponent->isVisible())
+        return;
+
+    int compx = uicomponent->getAbsPosition().x;
+    int compy = uicomponent->getAbsPosition().y;
+    int compw = uicomponent->getSize().w;
+    int comph = uicomponent->getSize().h;
+
+    SDL_Texture *texture = SDL_CreateTexture(
+        this->mainRenderer,
+        SDL_PIXELFORMAT_RGBA32,
+        SDL_RENDERER_TARGETTEXTURE,
+        compw,
+        comph);
+
+    SDL_UpdateTexture(texture, NULL, uicomponent->getSDLSurface()->pixels, uicomponent->getSDLSurface()->pitch);
+
+    int destx = compx;
+    int desty = compy;
+    int destw = compw;
+    int desth = comph;
+    int srcx = 0;
+    int srcy = 0;
+    int srcw = compw;
+    int srch = comph;
+
+    RelativeUIComponent *relUiComp = dynamic_cast<RelativeUIComponent *>(uicomponent);
+    if (relUiComp)
+    {
+        RelativeUIComponent *relUiCompParent = relUiComp->getParent();
+        if (relUiCompParent)
+        {
+            int parx = relUiCompParent->visibleArea.x;
+            int pary = relUiCompParent->visibleArea.y;
+            int parw = relUiCompParent->visibleArea.w;
+            int parh = relUiCompParent->visibleArea.h;
+
+            if (compx + compw > parx + parw)
+            {
+                srcw = parw + parx - compx;
+                destw = srcw;
+            }
+            if (compy + comph > pary + parh)
+            {
+                srch = parh + pary - compy;
+                desth = srch;
+            }
+            if (compx < parx)
+            {
+                srcx = parx - compx;
+                destx = parx;
+                destw -= srcx;
+            }
+            if (compy < pary)
+            {
+                srcy = pary - compy;
+                desty = pary;
+                desth -= srcy;
+            }
+        }
+
+        relUiComp->updateVisibleArea(destx, desty, destw, desth);
+    }
+
+    SDL_Rect rdest = {destx, desty, destw, desth};
+    SDL_Rect rsrc = {srcx, srcy, srcw, srch};
+
+    SDL_RenderCopy(this->mainRenderer, texture, &rsrc, &rdest);
+    SDL_DestroyTexture(texture);
+
+    if (this->thereWasPendingEvent)
+        uicomponent->invokeEvents(this->event);
+}
+
+void Window::renderFrame(Frame *frame)
+{
+    this->renderComponent(frame);
+
+    for (int i = 0; i < frame->getSizeOfMembers(); i++)
+    {
+        RelativeUIComponent *childComp = frame->getMemberAt(i);
+        this->renderComponent(childComp);
+
+        Frame *childFrame = dynamic_cast<Frame *>(childComp);
+        if (childFrame)
+            this->renderFrame(childFrame);
+    }
+}
+
+void Window::addFrame(Frame *frame)
+{
+    this->frames.push_back(frame);
+}
+
+void Window::delFrame(Frame *frame)
+{
+    for (int i = 0; i < this->frames.size(); i++)
+    {
+        if (this->frames.at(i) == frame)
+            this->frames.erase(this->frames.begin() + i);
+    }
+}
+
+void Window::onWindowResized(Event e)
+{
+}
+
+Window::~Window()
+{
+    for (Frame *frame : this->frames)
+    {
+        for (int i = 0; i < frame->getSizeOfMembers(); i++)
+        {
+            SDL_FreeSurface(frame->getMemberAt(i)->getSDLSurface());
+        }
+
+        SDL_FreeSurface(frame->getSDLSurface());
+    }
+
+    SDL_DestroyRenderer(this->mainRenderer);
+    SDL_DestroyWindow(this->baseWindow);
+    SDL_Quit();
+}
