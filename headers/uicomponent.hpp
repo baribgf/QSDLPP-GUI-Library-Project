@@ -53,7 +53,7 @@ public:
      * Invoke the component events.
      * @param event
      */
-    virtual void invokeEvents(SDL_Event event);
+    virtual bool invokeEvents(Event event);
 
     void setOnClickHandler(void (*handler)(Event e));
     void setOnMousePressedHandler(void (*handler)(Event e));

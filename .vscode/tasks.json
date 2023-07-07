@@ -6,13 +6,13 @@
         {
             "label": "Build",
             "type": "shell",
-            "command": "g++ src/**/*.cpp ./main.cpp -o build/main -lSDL2 -lSDL2_ttf",
+            "command": "cd build && (cmake .. && make);cd ..",
             "problemMatcher": []
         },
         {
             "label": "Build & Run",
             "type": "shell",
-            "command": "g++ src/**/*.cpp ./main.cpp -o build/main -lSDL2 -lSDL2_ttf && build/main",
+            "command": "cd build && (cmake .. && make && make run);cd ..",
             "problemMatcher": [],
             "group": {
                 "kind": "build",

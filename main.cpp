@@ -5,6 +5,7 @@
 int main(int argc, char const *argv[])
 {
     Window window("Main Window", 800, 500);
+    /*
     Frame frame(nullptr, window.getSize().w, window.getSize().h);
     frame.setBg({BLUE});
 
@@ -12,19 +13,12 @@ int main(int argc, char const *argv[])
 
     Button btn(&frame, "Click Me!", 120, 30);
     btn.setPosition(110, 110);
-
-    btn.setOnClickHandler(
-        [](Event e)
-        {
-            e.code = 2004;
-            e.push();
-        }
-    );
     
     frame.addComponent(&btn);
+    */
 
     window.exec();
 
-    debug("Exiting ..");
+    debug("Good bye! ..");
     return 0;
 }

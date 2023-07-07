@@ -77,17 +77,15 @@ bool UIComponent::insideBounds(int x, int y)
     return (this->getAbsPosition().x <= x && x <= this->getAbsPosition().x + this->getSize().w && this->getAbsPosition().y <= y && y <= this->getAbsPosition().y + this->getSize().h);
 }
 
-void UIComponent::invokeEvents(SDL_Event event)
+bool UIComponent::invokeEvents(Event event)
 {
-    Event e = Event::toEvent(event);
-
     if (this->insideBounds(event.button.x, event.button.y))
     {
         if (event.type == SDL_MOUSEMOTION)
         {
             if (!this->mouseEntered)
             {
-                this->onMouseEntered(e);
+                this->onMouseEntered(event);
                 this->mouseEntered = true;
             }
         }
@@ -95,25 +93,31 @@ void UIComponent::invokeEvents(SDL_Event event)
         {
             this->mousePressed = true;
             this->mouseReleased = false;
-            this->onMousePressed(e);
+            this->onMousePressed(event);
         }
         else if (event.button.type == SDL_MOUSEBUTTONUP)
         {
             this->mouseReleased = true;
-            this->onMouseReleased(e);
+            this->onMouseReleased(event);
 
             if (this->mousePressed)
             {
                 this->mousePressed = false;
-                this->onClick(e);
+                this->onClick(event);
             }
         }
     }
     else if (this->mouseEntered)
     {
         this->mouseEntered = false;
-        this->onMouseLeaved(e);
+        this->onMouseLeaved(event);
     }
+    else
+    {
+        return false;
+    }
+
+    return true;
 }
 
 UIComponent::~UIComponent()

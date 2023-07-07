@@ -3,6 +3,9 @@
 RelativeUIComponent::RelativeUIComponent(UIComponent *parent, Uint16 width, Uint16 height) : UIComponent(width, height)
 {
     this->parent = parent;
+    this->onKeyPressedHandlerPtr = nullptr;
+    this->onKeyReleasedHandlerPtr = nullptr;
+    this->setFocus(false);
     this->updateVisibleArea(this->getAbsPosition().x, this->getAbsPosition().y, this->getSize().w, this->getSize().h);
 }
 
@@ -29,6 +32,16 @@ bool RelativeUIComponent::insideBounds(int x, int y)
        return true;
     }
     return false;
+}
+
+bool RelativeUIComponent::hasFocus()
+{
+    return this->focus;
+}
+
+void RelativeUIComponent::setFocus(bool focus)
+{
+    this->focus = focus;
 }
 
 void RelativeUIComponent::updateVisibleArea(int x, int y, int width, int height)
@@ -66,6 +79,52 @@ void RelativeUIComponent::setPosition(int x, int y)
     this->updateVisibleArea(this->getAbsPosition().x, this->getAbsPosition().y, this->getSize().w, this->getSize().h);
 }
 
+bool RelativeUIComponent::invokeEvents(Event event)
+{
+    if (UIComponent::invokeEvents(event))
+    {
+        return true;
+    }
+    else if (event.type == EventType::KEY_PRESS)
+    {
+        this->onKeyPressed(event);
+    }
+    else if (event.type == EventType::KEY_RELEASE)
+    {
+        this->onKeyReleased(event);
+    }
+    else
+    {
+        return false;
+    }
+
+    return true;
+}
+
 RelativeUIComponent::~RelativeUIComponent()
 {
+}
+
+// Event handlers
+
+void RelativeUIComponent::setOnKeyPressedHandler(void (*handler)(Event e))
+{
+    this->onKeyPressedHandlerPtr = handler;
+}
+
+void RelativeUIComponent::setOnKeyReleasedHandler(void (*handler)(Event e))
+{
+    this->onKeyReleasedHandlerPtr = handler;
+}
+
+void RelativeUIComponent::onKeyPressed(Event e)
+{
+    if (this->onKeyPressedHandlerPtr)
+        this->onKeyPressedHandlerPtr(e);
+}
+
+void RelativeUIComponent::onKeyReleased(Event e)
+{
+    if (this->onKeyReleasedHandlerPtr)
+        this->onKeyReleasedHandlerPtr(e);
 }

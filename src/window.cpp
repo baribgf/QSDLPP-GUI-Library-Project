@@ -200,7 +200,7 @@ void Window::renderComponent(UIComponent *uicomponent)
     SDL_DestroyTexture(texture);
 
     if (this->thereWasPendingEvent)
-        uicomponent->invokeEvents(this->event);
+        uicomponent->invokeEvents(Event::toEvent(this->event));
 }
 
 void Window::renderFrame(Frame *frame)
