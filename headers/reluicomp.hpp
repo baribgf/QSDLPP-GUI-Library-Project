@@ -10,7 +10,7 @@ protected:
     UIComponent *parent;
 
 public:
-    RelativeUIComponent(UIComponent *parent, Uint16 width, Uint16 height, SDL_Color fillColor = {WHITE});
+    RelativeUIComponent(UIComponent *parent, Uint16 width, Uint16 height);
     ~RelativeUIComponent();
 
     SDL_Rect visibleArea;
@@ -20,7 +20,7 @@ public:
     /**
      * Get relative position
      */
-    SDL_Point getPosition();
+    Point getPosition();
 
     /**
      * Set relative position

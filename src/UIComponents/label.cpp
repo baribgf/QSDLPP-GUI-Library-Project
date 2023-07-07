@@ -1,15 +1,15 @@
 #include "../../headers/UIComponents/label.hpp"
 
-Label::Label(RelativeUIComponent *parent, string text, int width, int height, SDL_Color fg, SDL_Color bg) : RelativeUIComponent(parent, width, height, bg), text(text), fg(fg)
+Label::Label(RelativeUIComponent *parent, string text, int width, int height) : RelativeUIComponent(parent, width, height), text(text)
 {
     this->textX = 0;
     this->textY = 0;
     this->alignType = Align::NORTH_WEST;
     this->bordersVisible = false;
     this->FONT_PATH = "/usr/share/fonts/JetBrains/ttf/JetBrainsMono-Regular.ttf";
-    this->DEFAULT_BG = toSDLColor(WHITE);
-    this->DEFAULT_FG = toSDLColor(BLACK);
-    this->DEFAULT_BORDER_COLOR = toSDLColor(BLACK);
+    this->DEFAULT_BG = {WHITE};
+    this->DEFAULT_FG = {BLACK};
+    this->DEFAULT_BORDER_COLOR = {BLACK};
     this->ptSize = pixelsToPoints(height);
 
     this->setPosition(0, 0);
@@ -24,12 +24,12 @@ string Label::getText()
     return this->text;
 }
 
-SDL_Color Label::getFg()
+Color Label::getFg()
 {
     return this->fg;
 }
 
-SDL_Color Label::getBg()
+Color Label::getBg()
 {
     return this->getFillColor();
 }
@@ -112,7 +112,7 @@ void Label::setText(string text)
     this->update(text, this->ptSize, this->fg);
 }
 
-void Label::update(string text, Uint8 ptSize, SDL_Color fg)
+void Label::update(string text, Uint8 ptSize, Color fg)
 {
     this->fill(this->fillColor);
 
@@ -121,7 +121,7 @@ void Label::update(string text, Uint8 ptSize, SDL_Color fg)
     SDL_Surface *textSurface = TTF_RenderText_Blended(
         font,
         text.c_str(),
-        fg);
+        {this->fg.r, this->fg.g, this->fg.b, this->fg.a});
 
     SDL_BlitSurface(
         textSurface,
@@ -144,20 +144,40 @@ void Label::updateBorders()
     {
         // drawing borders
         Uint32 color = SDL_MapRGBA(this->baseSurface->format, this->borderColor.r, this->borderColor.g, this->borderColor.b, this->borderColor.a);
-        drawLineToSurface(this->baseSurface, 0, 0, this->getSize().w, 0, color);
-        drawLineToSurface(this->baseSurface, 0, this->getSize().h - 1, this->getSize().w - 1, this->getSize().h - 1, color);
-        drawLineToSurface(this->baseSurface, 0, 0, 0, this->getSize().h - 1, color);
-        drawLineToSurface(this->baseSurface, this->getSize().w - 1, 0, this->getSize().w - 1, this->getSize().h - 1, color);
+
+        drawLineToSurface( // top line
+            this->baseSurface,
+            0, 0,
+            this->getSize().w, 0,
+            color);
+
+        drawLineToSurface( // bottom line
+            this->baseSurface,
+            0, this->getSize().h - 1,
+            this->getSize().w, this->getSize().h - 1,
+            color);
+
+        drawLineToSurface( // left line
+            this->baseSurface,
+            0, 0,
+            0, this->getSize().h,
+            color);
+
+        drawLineToSurface( // right line
+            this->baseSurface,
+            this->getSize().w - 1, 0,
+            this->getSize().w - 1, this->getSize().h - 1,
+            color);
     }
 }
 
-void Label::setFg(SDL_Color fg)
+void Label::setFg(Color fg)
 {
     this->fg = fg;
     this->update(this->text, this->ptSize, fg);
 }
 
-void Label::setBg(SDL_Color bg)
+void Label::setBg(Color bg)
 {
     this->fillColor = bg;
 

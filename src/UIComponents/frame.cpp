@@ -4,7 +4,7 @@ Frame::Frame(RelativeUIComponent *parent, int width, int height) : RelativeUICom
 {
 }
 
-SDL_Color Frame::getBg()
+Color Frame::getBg()
 {
     return this->bg;
 }
@@ -19,7 +19,7 @@ int Frame::getSizeOfMembers()
     return this->members.size();
 }
 
-void Frame::setBg(SDL_Color bg)
+void Frame::setBg(Color bg)
 {
     this->bg = bg;
     this->fill(bg);
@@ -32,7 +32,7 @@ void Frame::setPosition(int x, int y)
 
     if (this->parent != nullptr)
     {
-        SDL_Point parPos = this->parent->getAbsPosition();
+        Point parPos = this->parent->getAbsPosition();
         x += parPos.x;
         y += parPos.y;
     }
@@ -41,7 +41,7 @@ void Frame::setPosition(int x, int y)
 
     for (RelativeUIComponent *comp : this->members)
     {
-        SDL_Point compPos = comp->getPosition();
+        Point compPos = comp->getPosition();
         comp->setAbsPosition(x + compPos.x, y + compPos.y);
         comp->setPosition(compPos.x, compPos.y);
     }

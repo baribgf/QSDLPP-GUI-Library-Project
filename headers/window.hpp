@@ -29,8 +29,8 @@ public:
     void setPosition(int x, int y);
     void setFPS(Uint16 fps);
 
-    SDL_Size getSize();
-    SDL_Point getPosition();
+    Dimension getSize();
+    Point getPosition();
     Uint16 getFPS();
 
     void setCentered();

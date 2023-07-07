@@ -1,7 +1,8 @@
 #include "../headers/uicomponent.hpp"
 
-UIComponent::UIComponent(Uint16 width, Uint16 height, SDL_Color fillColor)
+UIComponent::UIComponent(Uint16 width, Uint16 height)
 {
+    this->fillColor = {WHITE};
     this->mouseEntered = false;
     this->mousePressed = false;
     this->mouseReleased = true;
@@ -26,7 +27,7 @@ bool UIComponent::isVisible()
     return this->visible;
 }
 
-SDL_Color UIComponent::getFillColor()
+Color UIComponent::getFillColor()
 {
     return this->fillColor;
 }
@@ -36,12 +37,12 @@ SDL_Surface *UIComponent::getSDLSurface()
     return this->baseSurface;
 }
 
-SDL_Size UIComponent::getSize()
+Dimension UIComponent::getSize()
 {
     return {(Uint16)this->baseSurface->w, (Uint16)this->baseSurface->h};
 }
 
-SDL_Point UIComponent::getAbsPosition()
+Point UIComponent::getAbsPosition()
 {
     return {this->x, this->y};
 }
@@ -65,7 +66,7 @@ void UIComponent::setAbsPosition(int x, int y)
     this->y = y;
 }
 
-void UIComponent::fill(SDL_Color color)
+void UIComponent::fill(Color color)
 {
     SDL_FillRect(this->baseSurface, NULL, SDL_MapRGBA(this->baseSurface->format, color.r, color.g, color.b, color.a));
     this->fillColor = color;
@@ -78,8 +79,8 @@ bool UIComponent::insideBounds(int x, int y)
 
 void UIComponent::invokeEvents(SDL_Event event)
 {
-    Event e = toEvent(event);
-    
+    Event e = Event::toEvent(event);
+
     if (this->insideBounds(event.button.x, event.button.y))
     {
         if (event.type == SDL_MOUSEMOTION)

@@ -8,7 +8,7 @@ class UIComponent
 protected:
     int x, y;
     SDL_Surface *baseSurface;
-    SDL_Color fillColor;
+    Color fillColor;
     bool mouseEntered;
     bool mousePressed;
     bool mouseReleased;
@@ -30,13 +30,13 @@ protected:
     virtual bool insideBounds(int x, int y);
 
 public:
-    UIComponent(Uint16 width, Uint16 height, SDL_Color fillColor = {WHITE});
+    UIComponent(Uint16 width, Uint16 height);
 
     bool isVisible();
-    SDL_Size getSize();
-    virtual SDL_Point getAbsPosition();
+    Dimension getSize();
+    virtual Point getAbsPosition();
     
-    SDL_Color getFillColor();
+    Color getFillColor();
     SDL_Surface *getSDLSurface();
 
     virtual void setSize(Uint16 width, Uint16 height);
@@ -47,7 +47,7 @@ public:
      * Fill the entire surface.
      * @param color filling color
      */
-    void fill(SDL_Color color);
+    void fill(Color color);
 
     /**
      * Invoke the component events.
@@ -55,11 +55,11 @@ public:
      */
     virtual void invokeEvents(SDL_Event event);
 
-    void setOnClickHandler(void (*handler)(Event));
-    void setOnMousePressedHandler(void (*handler)(Event));
-    void setOnMouseReleasedHandler(void (*handler)(Event));
-    void setOnMouseEnteredHandler(void (*handler)(Event));
-    void setOnMouseLeavedHandler(void (*handler)(Event));
+    void setOnClickHandler(void (*handler)(Event e));
+    void setOnMousePressedHandler(void (*handler)(Event e));
+    void setOnMouseReleasedHandler(void (*handler)(Event e));
+    void setOnMouseEnteredHandler(void (*handler)(Event e));
+    void setOnMouseLeavedHandler(void (*handler)(Event e));
 
     ~UIComponent();
 };

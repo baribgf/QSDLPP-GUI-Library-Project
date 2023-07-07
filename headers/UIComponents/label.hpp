@@ -13,21 +13,21 @@ protected:
     string text;
     string FONT_PATH;
     Align alignType;
-    SDL_Color fg;
-    SDL_Color borderColor;
-    SDL_Color DEFAULT_BG;
-    SDL_Color DEFAULT_FG;
-    SDL_Color DEFAULT_BORDER_COLOR;
+    Color fg;
+    Color borderColor;
+    Color DEFAULT_BG;
+    Color DEFAULT_FG;
+    Color DEFAULT_BORDER_COLOR;
 
-    void update(string text, Uint8 ptSize, SDL_Color fg);
+    void update(string text, Uint8 ptSize, Color fg);
     void updateBorders();
 
 public:
-    Label(RelativeUIComponent *parent, string text, int width, int height, SDL_Color fg = {BLACK}, SDL_Color bg = {WHITE});
+    Label(RelativeUIComponent *parent, string text, int width, int height);
 
     string getText();
-    SDL_Color getFg();
-    SDL_Color getBg();
+    Color getFg();
+    Color getBg();
     Uint8 getPtSize();
     Align getAlign();
 
@@ -37,13 +37,13 @@ public:
      * Set the foreground or the text color.
      * @param fg color for foreground.
      */
-    void setFg(SDL_Color fg);
+    void setFg(Color fg);
 
     /**
      * Set the background color.
      * @param bg color for background.
      */
-    void setBg(SDL_Color bg);
+    void setBg(Color bg);
     void setPtSize(Uint8 p);
 
     /**

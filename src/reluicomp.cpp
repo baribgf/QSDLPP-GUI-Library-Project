@@ -1,12 +1,12 @@
 #include "../headers/reluicomp.hpp"
 
-RelativeUIComponent::RelativeUIComponent(UIComponent *parent, Uint16 width, Uint16 height, SDL_Color fillColor) : UIComponent(width, height, fillColor)
+RelativeUIComponent::RelativeUIComponent(UIComponent *parent, Uint16 width, Uint16 height) : UIComponent(width, height)
 {
     this->parent = parent;
     this->updateVisibleArea(this->getAbsPosition().x, this->getAbsPosition().y, this->getSize().w, this->getSize().h);
 }
 
-SDL_Point RelativeUIComponent::getPosition()
+Point RelativeUIComponent::getPosition()
 {
     return {this->relX, this->relY};
 }
@@ -56,7 +56,7 @@ void RelativeUIComponent::setPosition(int x, int y)
 
     if (this->parent)
     {
-        SDL_Point parPos = this->parent->getAbsPosition();
+        Point parPos = this->parent->getAbsPosition();
         x += parPos.x;
         y += parPos.y;
     }

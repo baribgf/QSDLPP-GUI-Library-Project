@@ -12,7 +12,7 @@
         {
             "label": "Build & Run",
             "type": "shell",
-            "command": "g++ src/**/*.cpp ./main.cpp -o build/main -lSDL2 -lSDL2_ttf && cd build && ./main",
+            "command": "g++ src/**/*.cpp ./main.cpp -o build/main -lSDL2 -lSDL2_ttf && build/main",
             "problemMatcher": [],
             "group": {
                 "kind": "build",

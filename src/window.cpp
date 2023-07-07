@@ -24,13 +24,16 @@ Window::Window(string title, int width, int height, bool fullscreen, bool center
 
 void Window::handleEvents()
 {
-    Event e = toEvent(this->event);
+    Event e = Event::toEvent(this->event);
     
     if (event.type == SDL_QUIT)
         this->running = false;
 
     else if (event.window.event == SDL_WINDOWEVENT_RESIZED)
         this->onWindowResized(e);
+
+    else if (event.user.code == 2004)
+        debug("Hello, World!");
 }
 
 void Window::mainloop()
@@ -70,16 +73,28 @@ void Window::exec()
         if (frameTime < frameDelay)
             SDL_Delay(frameDelay - frameTime);
     }
+
+    for (Frame *frame : this->frames)
+    {
+        for (int i = 0; i < frame->getSizeOfMembers(); i++)
+        {
+            SDL_FreeSurface(frame->getMemberAt(i)->getSDLSurface());
+        }
+
+        SDL_FreeSurface(frame->getSDLSurface());
+    }
+
+    this->frames.clear();
 }
 
-SDL_Point Window::getPosition()
+Point Window::getPosition()
 {
-    SDL_Point p;
+    Point p;
     SDL_GetWindowPosition(this->baseWindow, &p.x, &p.y);
     return p;
 }
 
-SDL_Size Window::getSize()
+Dimension Window::getSize()
 {
     int w, h;
     SDL_GetWindowSize(this->baseWindow, &w, &h);
@@ -223,17 +238,8 @@ void Window::onWindowResized(Event e)
 
 Window::~Window()
 {
-    for (Frame *frame : this->frames)
-    {
-        for (int i = 0; i < frame->getSizeOfMembers(); i++)
-        {
-            SDL_FreeSurface(frame->getMemberAt(i)->getSDLSurface());
-        }
-
-        SDL_FreeSurface(frame->getSDLSurface());
-    }
-
     SDL_DestroyRenderer(this->mainRenderer);
     SDL_DestroyWindow(this->baseWindow);
+    TTF_Quit();
     SDL_Quit();
 }

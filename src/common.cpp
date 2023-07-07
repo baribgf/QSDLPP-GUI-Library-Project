@@ -6,12 +6,6 @@ int randint(int min, int max)
     return rand() % max + min;
 }
 
-SDL_Color toSDLColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-{
-    SDL_Color c = {r, g, b, a};
-    return c;
-}
-
 int pointsToPixels(int points)
 {
     return points * (1.0 / 3.0 + 1.0);

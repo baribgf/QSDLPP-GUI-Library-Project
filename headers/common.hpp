@@ -25,7 +25,6 @@ using namespace std;
 #define BLUE  0  , 0  , 255, 255
 
 int randint(int min, int max);
-SDL_Color toSDLColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 int pointsToPixels(int points);
 int pixelsToPoints(int pixels);
 
@@ -35,7 +34,21 @@ typedef struct
 {
     Uint16 w;
     Uint16 h;
-} SDL_Size;
+} Dimension;
+
+typedef struct
+{
+    int x;
+    int y;
+} Point;
+
+typedef struct
+{
+    Uint8 r;
+    Uint8 g;
+    Uint8 b;
+    Uint8 a;
+} Color;
 
 enum Align
 {
@@ -48,24 +61,6 @@ enum Align
     SOUTH_EAST = 6,
     SOUTH_WEST = 7,
     CENTER     = 8
-};
-
-enum EventButtonType
-{
-    LEFT_BUTTON   = SDL_BUTTON_LEFT,
-    RIGHT_BUTTON  = SDL_BUTTON_RIGHT,
-    MIDDLE_BUTTON = SDL_BUTTON_MIDDLE
-};
-
-enum EventType
-{
-    MOUSE_DOWN    = SDL_MOUSEBUTTONDOWN,
-    MOUSE_UP      = SDL_MOUSEBUTTONDOWN,
-    MOUSE_MOTION  = SDL_MOUSEMOTION,
-    KEY_DOWN      = SDL_KEYDOWN,
-    KEY_UP        = SDL_KEYUP,
-    WINDOW_RESIZE = SDL_WINDOWEVENT_RESIZED,
-    QUIT          = SDL_QUIT
 };
 
 typedef struct
