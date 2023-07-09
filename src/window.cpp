@@ -6,8 +6,10 @@ Window::Window(string title, int width, int height, bool fullscreen, bool center
     this->frameDelay = 1000 / this->FPS;
     this->running = true;
     this->thereWasPendingEvent = false;
+    this->focusedComponent = nullptr;
 
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER);
+    IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
     TTF_Init();
 
     SDL_DisplayMode dm;
@@ -25,7 +27,7 @@ Window::Window(string title, int width, int height, bool fullscreen, bool center
 void Window::handleEvents()
 {
     Event e = Event::toEvent(this->event);
-    
+
     if (event.type == SDL_QUIT)
         this->running = false;
 
@@ -57,6 +59,9 @@ void Window::mainloop()
     {
         this->renderFrame(frame);
     }
+
+    if (this->thereWasPendingEvent)
+        this->handleFocusing();
 
     SDL_RenderPresent(this->mainRenderer);
 }
@@ -155,10 +160,10 @@ void Window::renderComponent(UIComponent *uicomponent)
     int srcw = compw;
     int srch = comph;
 
-    RelativeUIComponent *relUiComp = dynamic_cast<RelativeUIComponent *>(uicomponent);
+    RUIComponent *relUiComp = dynamic_cast<RUIComponent *>(uicomponent);
     if (relUiComp)
     {
-        RelativeUIComponent *relUiCompParent = dynamic_cast<RelativeUIComponent *>(relUiComp->getParent());
+        RUIComponent *relUiCompParent = dynamic_cast<RUIComponent *>(relUiComp->getParent());
         if (relUiCompParent)
         {
             int parx = relUiCompParent->visibleArea.x;
@@ -200,7 +205,9 @@ void Window::renderComponent(UIComponent *uicomponent)
     SDL_DestroyTexture(texture);
 
     if (this->thereWasPendingEvent)
+    {
         uicomponent->invokeEvents(Event::toEvent(this->event));
+    }
 }
 
 void Window::renderFrame(Frame *frame)
@@ -209,13 +216,47 @@ void Window::renderFrame(Frame *frame)
 
     for (int i = 0; i < frame->getSizeOfMembers(); i++)
     {
-        RelativeUIComponent *childComp = frame->getMemberAt(i);
+        RUIComponent *childComp = frame->getMemberAt(i);
         this->renderComponent(childComp);
+
+        if (childComp->hasFocus() && childComp != this->focusedComponent)
+        {
+            if (childComp->focusTimeID > maxFocusTimeID)
+                maxFocusTimeID = childComp->focusTimeID;
+
+            haveFocus.push_back(childComp);
+        }
 
         Frame *childFrame = dynamic_cast<Frame *>(childComp);
         if (childFrame)
             this->renderFrame(childFrame);
     }
+
+    if (frame->hasFocus() && frame != this->focusedComponent)
+    {
+        if (frame->focusTimeID > maxFocusTimeID)
+            maxFocusTimeID = frame->focusTimeID;
+
+        haveFocus.push_back(frame);
+    }
+}
+
+void Window::handleFocusing()
+{
+    for (RUIComponent *comp : haveFocus)
+    {
+        if (comp->focusTimeID >= maxFocusTimeID)
+        {
+            if (this->focusedComponent)
+                this->focusedComponent->setFocus(false);
+
+            comp->setFocus(true);
+            this->focusedComponent = comp;
+            break;
+        }
+    }
+
+    this->haveFocus.clear();
 }
 
 void Window::addFrame(Frame *frame)
@@ -232,14 +273,16 @@ void Window::delFrame(Frame *frame)
     }
 }
 
-void Window::onWindowResized(Event e)
-{
-}
-
 Window::~Window()
 {
     SDL_DestroyRenderer(this->mainRenderer);
     SDL_DestroyWindow(this->baseWindow);
     TTF_Quit();
     SDL_Quit();
+}
+
+// Event handlers
+
+void Window::onWindowResized(Event e)
+{
 }

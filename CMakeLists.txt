@@ -10,7 +10,8 @@ add_executable(main main.cpp ${SRC_FILES})
 
 find_library(SDL2 SDL2 REQUIRED)
 find_library(SDL2_ttf SDL2_ttf REQUIRED)
-target_link_libraries(main SDL2 SDL2_ttf)
+find_library(SDL2_image SDL2_image REQUIRED)
+target_link_libraries(main SDL2 SDL2_ttf SDL2_image)
 # target_link_libraries(myguilib SDL2 SDL2_ttf)
 
 add_custom_target(run

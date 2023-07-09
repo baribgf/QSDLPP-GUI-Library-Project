@@ -53,7 +53,7 @@ public:
      * Invoke the component events.
      * @param event
      */
-    virtual bool invokeEvents(Event event);
+    virtual void invokeEvents(Event event);
 
     void setOnClickHandler(void (*handler)(Event e));
     void setOnMousePressedHandler(void (*handler)(Event e));

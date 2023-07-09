@@ -2,7 +2,7 @@
 
 #include "uicomponent.hpp"
 
-class RelativeUIComponent : public UIComponent
+class RUIComponent : public UIComponent
 {
 protected:
     int relX;
@@ -10,17 +10,22 @@ protected:
     bool focus;
     UIComponent *parent;
 
-    void onKeyPressed(Event e);
-    void onKeyReleased(Event e);
+    virtual void onKeyPressed(Event e);
+    virtual void onKeyReleased(Event e);
 
     void (*onKeyPressedHandlerPtr)(Event);
     void (*onKeyReleasedHandlerPtr)(Event);
 
+    void onClick(Event e) override;
+
 public:
-    RelativeUIComponent(UIComponent *parent, Uint16 width, Uint16 height);
-    ~RelativeUIComponent();
+    RUIComponent(UIComponent *parent, Uint16 width, Uint16 height);
+    ~RUIComponent();
 
     SDL_Rect visibleArea;
+    Uint64 focusTimeID;
+
+    virtual bool insideBounds(int x, int y) override;
 
     void updateVisibleArea(int x, int y, int width, int height);
 
@@ -33,15 +38,14 @@ public:
      * Set relative position
      */
 
-    bool insideBounds(int x, int y) override;
     bool hasFocus();
     UIComponent *getParent();
 
     virtual void setPosition(int x, int y);
     void setSize(Uint16 width, Uint16 height) override;
-    void setFocus(bool focus);
+    virtual void setFocus(bool focus);
 
-    bool invokeEvents(Event event) override;
+    void invokeEvents(Event event) override;
 
     void setOnKeyPressedHandler(void (*handler)(Event e));
     void setOnKeyReleasedHandler(void (*handler)(Event e));

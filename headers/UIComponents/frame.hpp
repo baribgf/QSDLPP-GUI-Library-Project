@@ -2,23 +2,25 @@
 
 #include "../../headers/reluicomp.hpp"
 
-class Frame : public RelativeUIComponent
+class Frame : public RUIComponent
 {
 protected:
     Color bg;
-    vector<RelativeUIComponent*> members;
+    vector<RUIComponent*> members;
+
+    bool insideBounds(int x, int y) override;
 
 public:
-    Frame(RelativeUIComponent *parent, int width, int height);
+    Frame(RUIComponent *parent, int width, int height);
     ~Frame();
 
     Color getBg();
-    RelativeUIComponent *getMemberAt(int index);
+    RUIComponent *getMemberAt(int index);
     int getSizeOfMembers();
 
     void setBg(Color bg);
     void setPosition(int x, int y) override;
     
-    void addComponent(RelativeUIComponent *component);
-    void delComponent(RelativeUIComponent *component);
+    void add(RUIComponent *component);
+    void del(RUIComponent *component);
 };

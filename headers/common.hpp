@@ -9,6 +9,7 @@ using namespace std;
 #ifndef SDL_h_
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #endif
 
 #ifndef _GLIBCXX_VECTOR
@@ -65,14 +66,14 @@ enum Align
 
 typedef struct
 {
-    Uint8 type;
+    Uint32 type;
     int x;
     int y;
 } EventButton;
 
 typedef struct
 {
-    Uint8 type;
+    Uint32 type;
 } EventKey;
 
 enum EventType
@@ -84,7 +85,8 @@ enum EventType
     KEY_RELEASE = SDL_KEYUP,
     WINDOW_RESIZE = SDL_WINDOWEVENT_RESIZED,
     QUIT = SDL_QUIT,
-    USER_EVENT = SDL_USEREVENT
+    USER_EVENT = SDL_USEREVENT,
+    TEXTINPUT = SDL_TEXTINPUT
 };
 
 enum EventButtonCode

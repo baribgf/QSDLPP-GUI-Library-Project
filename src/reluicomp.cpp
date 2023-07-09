@@ -1,50 +1,46 @@
 #include "../headers/reluicomp.hpp"
 
-RelativeUIComponent::RelativeUIComponent(UIComponent *parent, Uint16 width, Uint16 height) : UIComponent(width, height)
+RUIComponent::RUIComponent(UIComponent *parent, Uint16 width, Uint16 height) : UIComponent(width, height)
 {
     this->parent = parent;
+    this->focusTimeID = 0;
+    this->setFocus(false);
     this->onKeyPressedHandlerPtr = nullptr;
     this->onKeyReleasedHandlerPtr = nullptr;
-    this->setFocus(false);
     this->updateVisibleArea(this->getAbsPosition().x, this->getAbsPosition().y, this->getSize().w, this->getSize().h);
 }
 
-Point RelativeUIComponent::getPosition()
+Point RUIComponent::getPosition()
 {
     return {this->relX, this->relY};
 }
 
-UIComponent *RelativeUIComponent::getParent()
+UIComponent *RUIComponent::getParent()
 {
     return this->parent;
 }
 
-bool RelativeUIComponent::insideBounds(int x, int y)
+bool RUIComponent::insideBounds(int x, int y)
 {
     if (this->getAbsPosition().x <= x && x <= this->getAbsPosition().x + this->getSize().w && this->getAbsPosition().y <= y && y <= this->getAbsPosition().y + this->getSize().h)
     {
         if (this->getParent())
         {
-            RelativeUIComponent *parent = dynamic_cast<RelativeUIComponent *>(this->getParent());
+            RUIComponent *parent = dynamic_cast<RUIComponent *>(this->getParent());
             if (parent)
                 return (parent->visibleArea.x <= x && x <= parent->visibleArea.x + parent->visibleArea.w && parent->visibleArea.y <= y && y <= parent->visibleArea.y + parent->visibleArea.h);
         }
-       return true;
+        return true;
     }
     return false;
 }
 
-bool RelativeUIComponent::hasFocus()
+bool RUIComponent::hasFocus()
 {
     return this->focus;
 }
 
-void RelativeUIComponent::setFocus(bool focus)
-{
-    this->focus = focus;
-}
-
-void RelativeUIComponent::updateVisibleArea(int x, int y, int width, int height)
+void RUIComponent::updateVisibleArea(int x, int y, int width, int height)
 {
     this->visibleArea.x = x;
     this->visibleArea.y = y;
@@ -52,7 +48,7 @@ void RelativeUIComponent::updateVisibleArea(int x, int y, int width, int height)
     this->visibleArea.h = height;
 }
 
-void RelativeUIComponent::setSize(Uint16 width, Uint16 height)
+void RUIComponent::setSize(Uint16 width, Uint16 height)
 {
     SDL_Surface *newBaseSurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, baseSurface->format->BitsPerPixel, baseSurface->format->format);
     SDL_BlitSurface(baseSurface, NULL, newBaseSurface, NULL);
@@ -62,7 +58,7 @@ void RelativeUIComponent::setSize(Uint16 width, Uint16 height)
     this->updateVisibleArea(this->getAbsPosition().x, this->getAbsPosition().y, this->getSize().w, this->getSize().h);
 }
 
-void RelativeUIComponent::setPosition(int x, int y)
+void RUIComponent::setPosition(int x, int y)
 {
     this->relX = x;
     this->relY = y;
@@ -79,52 +75,62 @@ void RelativeUIComponent::setPosition(int x, int y)
     this->updateVisibleArea(this->getAbsPosition().x, this->getAbsPosition().y, this->getSize().w, this->getSize().h);
 }
 
-bool RelativeUIComponent::invokeEvents(Event event)
+void RUIComponent::setFocus(bool focus)
 {
-    if (UIComponent::invokeEvents(event))
-    {
-        return true;
-    }
-    else if (event.type == EventType::KEY_PRESS)
-    {
-        this->onKeyPressed(event);
-    }
-    else if (event.type == EventType::KEY_RELEASE)
-    {
-        this->onKeyReleased(event);
-    }
-    else
-    {
-        return false;
-    }
+    if (focus)
+        this->focusTimeID = SDL_GetTicks64();
 
-    return true;
+    this->focus = focus;
 }
 
-RelativeUIComponent::~RelativeUIComponent()
+void RUIComponent::invokeEvents(Event event)
+{
+    UIComponent::invokeEvents(event);
+    
+    if (this->hasFocus())
+    {
+        if (event.type == EventType::KEY_PRESS)
+        {
+            this->onKeyPressed(event);
+        }
+        else if (event.type == EventType::KEY_RELEASE)
+        {
+            this->onKeyReleased(event);
+        }
+    }
+}
+
+RUIComponent::~RUIComponent()
 {
 }
 
 // Event handlers
 
-void RelativeUIComponent::setOnKeyPressedHandler(void (*handler)(Event e))
+void RUIComponent::setOnKeyPressedHandler(void (*handler)(Event e))
 {
     this->onKeyPressedHandlerPtr = handler;
 }
 
-void RelativeUIComponent::setOnKeyReleasedHandler(void (*handler)(Event e))
+void RUIComponent::setOnKeyReleasedHandler(void (*handler)(Event e))
 {
     this->onKeyReleasedHandlerPtr = handler;
 }
 
-void RelativeUIComponent::onKeyPressed(Event e)
+void RUIComponent::onKeyPressed(Event e)
 {
     if (this->onKeyPressedHandlerPtr)
         this->onKeyPressedHandlerPtr(e);
 }
 
-void RelativeUIComponent::onKeyReleased(Event e)
+void RUIComponent::onKeyReleased(Event e)
 {
     if (this->onKeyReleasedHandlerPtr)
         this->onKeyReleasedHandlerPtr(e);
+}
+
+void RUIComponent::onClick(Event e)
+{
+    UIComponent::onClick(e);
+
+    this->setFocus(true);
 }

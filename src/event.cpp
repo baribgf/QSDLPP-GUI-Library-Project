@@ -13,12 +13,13 @@ void Event::push()
 Event Event::toEvent(SDL_Event e)
 {
     Event event;
-    event.button.type = e.button.button;
+    event.button.type = e.button.type;
     event.button.x = e.button.x;
     event.button.y = e.button.y;
     event.type = e.type;
     event.code = e.user.code;
     event.key.type = e.key.keysym.sym;
+
     return event;
 }
 

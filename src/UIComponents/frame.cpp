@@ -1,6 +1,6 @@
 #include "../../headers/UIComponents/frame.hpp"
 
-Frame::Frame(RelativeUIComponent *parent, int width, int height) : RelativeUIComponent(parent, width, height)
+Frame::Frame(RUIComponent *parent, int width, int height) : RUIComponent(parent, width, height)
 {
 }
 
@@ -9,7 +9,7 @@ Color Frame::getBg()
     return this->bg;
 }
 
-RelativeUIComponent *Frame::getMemberAt(int index)
+RUIComponent *Frame::getMemberAt(int index)
 {
     return this->members.at(index);
 }
@@ -17,6 +17,28 @@ RelativeUIComponent *Frame::getMemberAt(int index)
 int Frame::getSizeOfMembers()
 {
     return this->members.size();
+}
+
+bool Frame::insideBounds(int x, int y)
+{
+    for (RUIComponent *comp : this->members)
+    {
+        if (comp->insideBounds(x, y))
+            return false;
+    }
+
+    if (this->getAbsPosition().x <= x && x <= this->getAbsPosition().x + this->getSize().w && this->getAbsPosition().y <= y && y <= this->getAbsPosition().y + this->getSize().h)
+    {
+        if (this->getParent())
+        {
+            RUIComponent *parent = dynamic_cast<RUIComponent *>(this->getParent());
+            if (parent)
+                return (parent->visibleArea.x <= x && x <= parent->visibleArea.x + parent->visibleArea.w && parent->visibleArea.y <= y && y <= parent->visibleArea.y + parent->visibleArea.h);
+        }
+        return true;
+    }
+
+    return false;
 }
 
 void Frame::setBg(Color bg)
@@ -27,19 +49,9 @@ void Frame::setBg(Color bg)
 
 void Frame::setPosition(int x, int y)
 {
-    this->relX = x;
-    this->relY = y;
+    RUIComponent::setPosition(x, y);
 
-    if (this->parent != nullptr)
-    {
-        Point parPos = this->parent->getAbsPosition();
-        x += parPos.x;
-        y += parPos.y;
-    }
-    
-    this->setAbsPosition(x, y);
-
-    for (RelativeUIComponent *comp : this->members)
+    for (RUIComponent *comp : this->members)
     {
         Point compPos = comp->getPosition();
         comp->setAbsPosition(x + compPos.x, y + compPos.y);
@@ -49,12 +61,12 @@ void Frame::setPosition(int x, int y)
     this->updateVisibleArea(this->getAbsPosition().x, this->getAbsPosition().y, this->getSize().w, this->getSize().h);
 }
 
-void Frame::addComponent(RelativeUIComponent *component)
+void Frame::add(RUIComponent *component)
 {
     this->members.push_back(component);
 }
 
-void Frame::delComponent(RelativeUIComponent *component)
+void Frame::del(RUIComponent *component)
 {
     for (int i = 0; i < this->members.size(); i++)
     {

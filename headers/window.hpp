@@ -9,6 +9,7 @@ class Window
 private:
     void mainloop();
     void handleEvents();
+    void handleFocusing();
     void renderComponent(UIComponent *uicomponent);
     void renderFrame(Frame *frame);
     bool running;
@@ -18,8 +19,12 @@ private:
     SDL_Event event;
     vector<Frame*> frames;
 
+    vector<RUIComponent *> haveFocus;
+    Uint64 maxFocusTimeID = 0;
+
 protected:
     Uint16 FPS, frameDelay;
+    RUIComponent *focusedComponent;
     virtual void onWindowResized(Event e);
 
 public:

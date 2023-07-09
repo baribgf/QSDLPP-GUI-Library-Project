@@ -77,7 +77,7 @@ bool UIComponent::insideBounds(int x, int y)
     return (this->getAbsPosition().x <= x && x <= this->getAbsPosition().x + this->getSize().w && this->getAbsPosition().y <= y && y <= this->getAbsPosition().y + this->getSize().h);
 }
 
-bool UIComponent::invokeEvents(Event event)
+void UIComponent::invokeEvents(Event event)
 {
     if (this->insideBounds(event.button.x, event.button.y))
     {
@@ -112,12 +112,6 @@ bool UIComponent::invokeEvents(Event event)
         this->mouseEntered = false;
         this->onMouseLeaved(event);
     }
-    else
-    {
-        return false;
-    }
-
-    return true;
 }
 
 UIComponent::~UIComponent()
