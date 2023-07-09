@@ -16,8 +16,8 @@ Label::Label(RUIComponent *parent, string text, int width, int height) : RUIComp
     this->DEFAULT_BG = {WHITE};
     this->DEFAULT_FG = {BLACK};
     this->DEFAULT_BORDERS_COLOR = {BLACK};
-    this->textSize = pixelsToPoints(height);
-
+    
+    this->setTextSize(pixelsToPoints(height));
     this->setPosition(0, 0);
     this->setFg(this->DEFAULT_FG);
     this->setBordersColor(this->DEFAULT_BORDERS_COLOR);
@@ -148,7 +148,7 @@ void Label::drawText()
     if (text.length() > 0)
     {
         SDL_Rect r = {this->textX, this->textY, this->getSize().w, this->getSize().h};
-        TTF_Font *font = TTF_OpenFont(this->FONT_PATH.c_str(), textSize);
+        TTF_Font *font = TTF_OpenFont(this->FONT_PATH.c_str(), this->textSize);
 
         SDL_Surface *textSurface = TTF_RenderText_Blended(
             font,

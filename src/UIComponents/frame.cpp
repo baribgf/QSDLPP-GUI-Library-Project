@@ -9,16 +9,6 @@ Color Frame::getBg()
     return this->bg;
 }
 
-RUIComponent *Frame::getMemberAt(int index)
-{
-    return this->members.at(index);
-}
-
-int Frame::getSizeOfMembers()
-{
-    return this->members.size();
-}
-
 bool Frame::insideBounds(int x, int y)
 {
     for (RUIComponent *comp : this->members)
@@ -73,6 +63,11 @@ void Frame::del(RUIComponent *component)
         if (this->members.at(i) == component)
             this->members.erase(this->members.begin() + i);
     }
+}
+
+vector<RUIComponent*> Frame::getMembers()
+{
+    return this->members;
 }
 
 Frame::~Frame()

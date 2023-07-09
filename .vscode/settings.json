@@ -4,6 +4,11 @@
         "iostream": "cpp",
         "vector": "cpp"
     },
-    "cmake.configureOnOpen": false,
-    "C_Cpp.autoAddFileAssociations": false,
+    "C_Cpp.files.exclude": {
+        "**/.vscode": true,
+        "**/.vs": true,
+        "**/build": true,
+        "/build": true,
+        "build": true,
+    }
 }

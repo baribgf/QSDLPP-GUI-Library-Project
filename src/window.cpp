@@ -20,6 +20,7 @@ Window::Window(string title, int width, int height, bool fullscreen, bool center
 
     this->baseWindow = SDL_CreateWindow(title.c_str(), x, y, width, height, (fullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN) | SDL_WINDOW_RESIZABLE);
     this->mainRenderer = SDL_CreateRenderer(this->baseWindow, -1, 0);
+    SDL_SetRenderDrawBlendMode(this->mainRenderer, SDL_BLENDMODE_BLEND);
 
     ////////////////////////////////////////////////////////////////////////////////////////
 }
@@ -81,9 +82,9 @@ void Window::exec()
 
     for (Frame *frame : this->frames)
     {
-        for (int i = 0; i < frame->getSizeOfMembers(); i++)
+        for (RUIComponent *comp : frame->getMembers())
         {
-            SDL_FreeSurface(frame->getMemberAt(i)->getSDLSurface());
+            SDL_FreeSurface(comp->getSDLSurface());
         }
 
         SDL_FreeSurface(frame->getSDLSurface());
@@ -214,11 +215,9 @@ void Window::renderFrame(Frame *frame)
 {
     this->renderComponent(frame);
 
-    for (int i = 0; i < frame->getSizeOfMembers(); i++)
+    for (RUIComponent *childComp : frame->getMembers())
     {
-        RUIComponent *childComp = frame->getMemberAt(i);
         this->renderComponent(childComp);
-
         if (childComp->hasFocus() && childComp != this->focusedComponent)
         {
             if (childComp->focusTimeID > maxFocusTimeID)

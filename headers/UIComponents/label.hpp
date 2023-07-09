@@ -59,7 +59,7 @@ public:
      * Align text amoung component bounds.
      * @param a align type: 'CENTER', 'NORTH', 'SOUTH_EAST', .. etc.
      */
-    void setTextAlign(Align a);
+    virtual void setTextAlign(Align a);
     void setBordersVisible(bool visible);
     void setBordersColor(Color color);
     void setImage(string imgPath, Align align = Align::NORTH_WEST);

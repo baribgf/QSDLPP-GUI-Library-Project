@@ -15,8 +15,7 @@ public:
     ~Frame();
 
     Color getBg();
-    RUIComponent *getMemberAt(int index);
-    int getSizeOfMembers();
+    vector<RUIComponent*> getMembers();
 
     void setBg(Color bg);
     void setPosition(int x, int y) override;
