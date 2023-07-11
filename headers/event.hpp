@@ -4,13 +4,12 @@
 
 class Event
 {
-
 public:
     Event();
     ~Event();
 
-    Uint32 type;
-    Uint32 code;
+    Uint64 type;
+    Uint64 code;
     EventButton button;
     EventKey key;
 

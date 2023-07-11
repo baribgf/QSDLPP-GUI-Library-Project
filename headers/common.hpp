@@ -66,14 +66,14 @@ enum Align
 
 typedef struct
 {
-    Uint32 type;
+    Uint64 type;
     int x;
     int y;
 } EventButton;
 
 typedef struct
 {
-    Uint32 type;
+    Uint64 type;
 } EventKey;
 
 enum EventType

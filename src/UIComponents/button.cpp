@@ -8,6 +8,7 @@ Button::Button(RUIComponent *parent, string text, int width, int height) : Label
     this->setBg(this->DEFAULT_BG);
     this->setFg(this->DEFAULT_FG);
     this->setBordersVisible(true);
+    this->setTextAlign(Align::CENTER);
 }
 
 Color Button::getBorderColor()

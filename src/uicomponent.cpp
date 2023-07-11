@@ -13,6 +13,7 @@ UIComponent::UIComponent(Uint16 width, Uint16 height)
     this->onMouseReleasedHandlerPtr = nullptr;
     this->onMouseEnteredHandlerPtr = nullptr;
     this->onMouseLeavedHandlerPtr = nullptr;
+    this->onMouseMotionHandlerPtr = nullptr;
 
     this->DEFAULT_CURSOR = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
     this->HAND_CURSOR = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
@@ -83,6 +84,8 @@ void UIComponent::invokeEvents(Event event)
     {
         if (event.type == SDL_MOUSEMOTION)
         {
+            this->onMouseMotion(event);
+
             if (!this->mouseEntered)
             {
                 this->onMouseEntered(event);
@@ -120,29 +123,34 @@ UIComponent::~UIComponent()
 
 // Event handlers
 
-void UIComponent::setOnClickHandler(void (*handler)(Event))
+void UIComponent::setOnClickHandler(void (*handler)(Event e))
 {
     this->onClickHandlerPtr = handler;
 }
 
-void UIComponent::setOnMousePressedHandler(void (*handler)(Event))
+void UIComponent::setOnMousePressedHandler(void (*handler)(Event e))
 {
     this->onMousePressedHandlerPtr = handler;
 }
 
-void UIComponent::setOnMouseReleasedHandler(void (*handler)(Event))
+void UIComponent::setOnMouseReleasedHandler(void (*handler)(Event e))
 {
     this->onMouseReleasedHandlerPtr = handler;
 }
 
-void UIComponent::setOnMouseEnteredHandler(void (*handler)(Event))
+void UIComponent::setOnMouseEnteredHandler(void (*handler)(Event e))
 {
     this->onMouseEnteredHandlerPtr = handler;
 }
 
-void UIComponent::setOnMouseLeavedHandler(void (*handler)(Event))
+void UIComponent::setOnMouseLeavedHandler(void (*handler)(Event e))
 {
     this->onMouseLeavedHandlerPtr = handler;
+}
+
+void UIComponent::setOnMouseMotionHandler(void (*handler)(Event e))
+{
+    this->onMouseMotionHandlerPtr = handler;
 }
 
 void UIComponent::onClick(Event e)
@@ -173,4 +181,10 @@ void UIComponent::onMouseLeaved(Event e)
 {
     if (this->onMouseLeavedHandlerPtr)
         this->onMouseLeavedHandlerPtr(e);
+}
+
+void UIComponent::onMouseMotion(Event e)
+{
+    if (this->onMouseMotionHandlerPtr)
+        this->onMouseMotionHandlerPtr(e);
 }

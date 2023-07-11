@@ -20,9 +20,10 @@ protected:
 
 public:
     RUIComponent(UIComponent *parent, Uint16 width, Uint16 height);
-    ~RUIComponent();
+    virtual ~RUIComponent();
 
     SDL_Rect visibleArea;
+    SDL_Rect parviewport;
     Uint64 focusTimeID;
 
     virtual bool insideBounds(int x, int y) override;

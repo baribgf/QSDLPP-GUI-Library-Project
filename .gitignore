@@ -2,3 +2,5 @@
 *.a
 /build
 /build/*
+.project
+.cproject

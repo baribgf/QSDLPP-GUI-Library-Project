@@ -28,7 +28,8 @@ protected:
     virtual void onWindowResized(Event e);
 
 public:
-    Window(string title, int width, int height, bool fullscreen = false, bool centered = true);
+    Window(std::string title, int width, int height, bool fullscreen = false, bool centered = true);
+    ~Window();
 
     void setSize(Uint16 width, Uint16 height);
     void setPosition(int x, int y);
@@ -47,6 +48,4 @@ public:
      * Start the window application.
      */
     void exec();
-
-    ~Window();
 };

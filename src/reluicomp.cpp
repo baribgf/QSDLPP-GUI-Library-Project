@@ -22,17 +22,33 @@ UIComponent *RUIComponent::getParent()
 
 bool RUIComponent::insideBounds(int x, int y)
 {
-    if (this->getAbsPosition().x <= x && x <= this->getAbsPosition().x + this->getSize().w && this->getAbsPosition().y <= y && y <= this->getAbsPosition().y + this->getSize().h)
+    RUIComponent *parent = dynamic_cast<RUIComponent *>(this->getParent());
+    if (parent)
     {
-        if (this->getParent())
-        {
-            RUIComponent *parent = dynamic_cast<RUIComponent *>(this->getParent());
-            if (parent)
-                return (parent->visibleArea.x <= x && x <= parent->visibleArea.x + parent->visibleArea.w && parent->visibleArea.y <= y && y <= parent->visibleArea.y + parent->visibleArea.h);
-        }
-        return true;
+        if (!(
+            this->getAbsPosition().x - parviewport.x <= x && x <= this->getAbsPosition().x + this->getSize().w - parviewport.x
+            && this->getAbsPosition().y - parviewport.y <= y && y <= this->getAbsPosition().y + this->getSize().h - parviewport.y))
+            return false;
+
+        if (!(
+            parent->visibleArea.x <= x && x <= parent->visibleArea.x + parent->visibleArea.w
+            && parent->visibleArea.y <= y && y <= parent->visibleArea.y + parent->visibleArea.h))
+            return false;
+
+        if (!(
+            parent->getAbsPosition().x <= x && x <= parent->getAbsPosition().x + parviewport.w
+            && parent->getAbsPosition().y <= y && y <= parent->getAbsPosition().y + parviewport.h))
+            return false;
     }
-    return false;
+    else
+    {
+        if (!(
+            this->getAbsPosition().x <= x && x <= this->getAbsPosition().x + this->getSize().w
+            && this->getAbsPosition().y <= y && y <= this->getAbsPosition().y + this->getSize().h))
+            return false;
+    }
+
+    return true;
 }
 
 bool RUIComponent::hasFocus()
@@ -71,7 +87,6 @@ void RUIComponent::setPosition(int x, int y)
     }
 
     this->setAbsPosition(x, y);
-
     this->updateVisibleArea(this->getAbsPosition().x, this->getAbsPosition().y, this->getSize().w, this->getSize().h);
 }
 
@@ -86,7 +101,7 @@ void RUIComponent::setFocus(bool focus)
 void RUIComponent::invokeEvents(Event event)
 {
     UIComponent::invokeEvents(event);
-    
+
     if (this->hasFocus())
     {
         if (event.type == EventType::KEY_PRESS)

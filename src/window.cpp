@@ -30,13 +30,44 @@ void Window::handleEvents()
     Event e = Event::toEvent(this->event);
 
     if (event.type == SDL_QUIT)
+    {
         this->running = false;
+    }
 
     else if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+    {
         this->onWindowResized(e);
+    }
 
     else if (event.user.code == 2004)
+    {
         debug("Hello, World!");
+    }
+    
+    int step = 5;
+
+    if (event.key.keysym.sym == SDLK_RIGHT && event.type == SDL_KEYDOWN)
+    {
+        Frame *f = this->frames.at(0);
+        f->setViewport(f->viewport.x + step, f->viewport.y, f->viewport.w, f->viewport.h);
+    }
+    else if (event.key.keysym.sym == SDLK_LEFT && event.type == SDL_KEYDOWN)
+    {
+        Frame *f = this->frames.at(0);
+        f->setViewport(f->viewport.x - step, f->viewport.y, f->viewport.w, f->viewport.h);
+    }
+    else if (event.key.keysym.sym == SDLK_DOWN && event.type == SDL_KEYDOWN)
+    {
+        Frame *f = this->frames.at(0);
+        if (f->viewport.y + step <= f->getSize().h - f->viewport.h)
+            f->setViewport(f->viewport.x, f->viewport.y + step, f->viewport.w, f->viewport.h);
+    }
+    else if (event.key.keysym.sym == SDLK_UP && event.type == SDL_KEYDOWN)
+    {
+        Frame *f = this->frames.at(0);
+        f->setViewport(f->viewport.x, f->viewport.y - step, f->viewport.w, f->viewport.h);
+    }
+    
 }
 
 void Window::mainloop()
@@ -83,9 +114,7 @@ void Window::exec()
     for (Frame *frame : this->frames)
     {
         for (RUIComponent *comp : frame->getMembers())
-        {
             SDL_FreeSurface(comp->getSDLSurface());
-        }
 
         SDL_FreeSurface(frame->getSDLSurface());
     }
@@ -152,14 +181,15 @@ void Window::renderComponent(UIComponent *uicomponent)
 
     SDL_UpdateTexture(texture, NULL, uicomponent->getSDLSurface()->pixels, uicomponent->getSDLSurface()->pitch);
 
-    int destx = compx;
-    int desty = compy;
-    int destw = compw;
-    int desth = comph;
     int srcx = 0;
     int srcy = 0;
     int srcw = compw;
     int srch = comph;
+
+    int destx = compx;
+    int desty = compy;
+    int destw = srcw;
+    int desth = srch;
 
     RUIComponent *relUiComp = dynamic_cast<RUIComponent *>(uicomponent);
     if (relUiComp)
@@ -196,11 +226,23 @@ void Window::renderComponent(UIComponent *uicomponent)
             }
         }
 
-        relUiComp->updateVisibleArea(destx, desty, destw, desth);
+        // relUiComp->updateVisibleArea(destx, desty, destw, desth);
     }
 
-    SDL_Rect rdest = {destx, desty, destw, desth};
+    Frame *frameComp = dynamic_cast<Frame *>(uicomponent);
+    if (frameComp)
+    {
+        srcx += frameComp->viewport.x;
+        srcy += frameComp->viewport.y;
+        srcw = frameComp->viewport.w;
+        srch = frameComp->viewport.h;
+
+        destw = srcw;
+        desth = srch;
+    }
+
     SDL_Rect rsrc = {srcx, srcy, srcw, srch};
+    SDL_Rect rdest = {destx, desty, destw, desth};
 
     SDL_RenderCopy(this->mainRenderer, texture, &rsrc, &rdest);
     SDL_DestroyTexture(texture);
@@ -213,11 +255,38 @@ void Window::renderComponent(UIComponent *uicomponent)
 
 void Window::renderFrame(Frame *frame)
 {
-    this->renderComponent(frame);
-
+    frame->fill(frame->getFillColor());
+    
+    // render all frame content
     for (RUIComponent *childComp : frame->getMembers())
     {
-        this->renderComponent(childComp);
+        if (!childComp->isVisible())
+            continue;
+
+        // Copy component surface into parent frame
+
+        Frame *childFrame = dynamic_cast<Frame *>(childComp);
+        if (childFrame)
+        {
+            this->renderFrame(childFrame);
+        }
+        else
+        {
+            SDL_Rect rdest = {
+                childComp->getPosition().x,
+                childComp->getPosition().y,
+                childComp->getSize().w,
+                childComp->getSize().h};
+            
+            SDL_Rect rsrc = {0, 0, childComp->getSize().w, childComp->getSize().h};
+            SDL_BlitSurface(childComp->getSDLSurface(), &rsrc, frame->getSDLSurface(), &rdest);
+        }
+
+        if (this->thereWasPendingEvent)
+        {
+            childComp->invokeEvents(Event::toEvent(this->event));
+        }
+
         if (childComp->hasFocus() && childComp != this->focusedComponent)
         {
             if (childComp->focusTimeID > maxFocusTimeID)
@@ -225,12 +294,13 @@ void Window::renderFrame(Frame *frame)
 
             haveFocus.push_back(childComp);
         }
-
-        Frame *childFrame = dynamic_cast<Frame *>(childComp);
-        if (childFrame)
-            this->renderFrame(childFrame);
     }
 
+    frame->update(); // update the frame before blitting into it.
+
+    this->renderComponent(frame);
+
+    // for focusing purposes ..
     if (frame->hasFocus() && frame != this->focusedComponent)
     {
         if (frame->focusTimeID > maxFocusTimeID)

@@ -1,32 +1,29 @@
 #include "headers/window.hpp"
 #include "headers/UIComponents/frame.hpp"
-#include "headers/UIComponents/radiobutton.hpp"
-#include "headers/UIComponents/radiogroup.hpp"
+#include "headers/UIComponents/button.hpp"
 
 int main(int argc, char const *argv[])
 {
     Window window("Main Window", 800, 500);
-    Frame frame(nullptr, window.getSize().w, window.getSize().h);
-    frame.setBg({BLUE});
     
-    RadioButton rb1(&frame, "Radio 1", 120, 30);
-    RadioButton rb2(&frame, "Radio 2", 120, 30);
-    RadioButton rb3(&frame, "Radio 3", 120, 30);
+    Frame frame(nullptr, 800, 500);
+    frame.setBg({BLUE});
+    frame.setViewport(0, 0, 0.75 * frame.getSize().w, 0.75 * frame.getSize().h);
 
-    rb1.setPosition(200, 100);
-    rb2.setPosition(200, 200);
-    rb3.setPosition(200, 300);
+    Button btn1(&frame, "Button 1", 150, 30);
+    Button btn2(&frame, "Button 2", 150, 30);
+    Button btn3(&frame, "Button 3", 150, 30);
 
-    RadioGroup radioGroup;
-    radioGroup.add(&rb1);
-    radioGroup.add(&rb2);
-    radioGroup.add(&rb3);
+    btn1.setPosition(20, 20);
+    btn2.setPosition(200, 200);
+    btn3.setPosition(600, 360);
 
-    frame.add(&rb1);
-    frame.add(&rb2);
-    frame.add(&rb3);
+    frame.add(&btn1);
+    frame.add(&btn2);
+    frame.add(&btn3);
 
     window.addFrame(&frame);
+
     window.exec();
 
     debug("Good bye! ..");

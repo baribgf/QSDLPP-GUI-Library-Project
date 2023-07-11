@@ -20,12 +20,14 @@ protected:
     virtual void onMouseReleased(Event e);
     virtual void onMouseEntered(Event e);
     virtual void onMouseLeaved(Event e);
+    virtual void onMouseMotion(Event e);
 
     void (*onClickHandlerPtr)(Event);
     void (*onMousePressedHandlerPtr)(Event);
     void (*onMouseReleasedHandlerPtr)(Event);
     void (*onMouseEnteredHandlerPtr)(Event);
     void (*onMouseLeavedHandlerPtr)(Event);
+    void (*onMouseMotionHandlerPtr)(Event);
 
     virtual bool insideBounds(int x, int y);
 
@@ -37,7 +39,7 @@ public:
     virtual Point getAbsPosition();
     
     Color getFillColor();
-    SDL_Surface *getSDLSurface();
+    virtual SDL_Surface *getSDLSurface();
 
     virtual void setSize(Uint16 width, Uint16 height);
     void setVisible(bool visible);
@@ -60,6 +62,7 @@ public:
     void setOnMouseReleasedHandler(void (*handler)(Event e));
     void setOnMouseEnteredHandler(void (*handler)(Event e));
     void setOnMouseLeavedHandler(void (*handler)(Event e));
+    void setOnMouseMotionHandler(void (*handler)(Event e));
 
-    ~UIComponent();
+    virtual ~UIComponent();
 };

@@ -14,7 +14,7 @@ protected:
     void onKeyReleased(Event e) override;
 
 public:
-    Button(RUIComponent *parent, string text, int width, int height);
+    Button(RUIComponent *parent, std::string text, int width, int height);
 
     Color getBorderColor();
     void setBorderColor(Color color);
