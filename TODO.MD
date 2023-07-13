@@ -2,7 +2,6 @@
 
 ### Critical:
 
-- Improve text typing experience a llittle bit.
 - Integrate an interface for theming.
 - Add the Menu element.
 - Add the Canvas element.

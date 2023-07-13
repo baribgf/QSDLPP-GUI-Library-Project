@@ -2,8 +2,8 @@
 
 Frame::Frame(RUIComponent *parent, int width, int height) : RUIComponent(parent, width, height)
 {
-	this->overflowX = true;
-	this->overflowY = true;
+	this->overflowX = false;
+	this->overflowY = false;
 	this->movingScrollBarV = false;
 	this->movingScrollBarH = false;
 	this->overrideCompInsideBounds = false;

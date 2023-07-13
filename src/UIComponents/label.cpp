@@ -180,6 +180,7 @@ void Label::drawText()
     else
     {
         this->textW = 0;
+        this->textH = this->getSize().h;
     }
 }
 

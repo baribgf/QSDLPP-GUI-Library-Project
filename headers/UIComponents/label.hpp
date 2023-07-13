@@ -25,7 +25,7 @@ protected:
 
     virtual void update();
     void drawBorders();
-    void drawText();
+    virtual void drawText();
     void drawImage();
     void alignImage();
 
