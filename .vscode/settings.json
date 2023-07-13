@@ -2,7 +2,9 @@
     "files.associations": {
         "*.embeddedhtml": "html",
         "iostream": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "cstdio": "cpp",
+        "array": "cpp"
     },
     "C_Cpp.files.exclude": {
         "**/.vscode": true,

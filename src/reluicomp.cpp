@@ -7,7 +7,6 @@ RUIComponent::RUIComponent(UIComponent *parent, Uint16 width, Uint16 height) : U
     this->setFocus(false);
     this->onKeyPressedHandlerPtr = nullptr;
     this->onKeyReleasedHandlerPtr = nullptr;
-    this->updateVisibleArea(this->getAbsPosition().x, this->getAbsPosition().y, this->getSize().w, this->getSize().h);
 }
 
 Point RUIComponent::getPosition()
@@ -31,11 +30,6 @@ bool RUIComponent::insideBounds(int x, int y)
             return false;
 
         if (!(
-            parent->visibleArea.x <= x && x <= parent->visibleArea.x + parent->visibleArea.w
-            && parent->visibleArea.y <= y && y <= parent->visibleArea.y + parent->visibleArea.h))
-            return false;
-
-        if (!(
             parent->getAbsPosition().x <= x && x <= parent->getAbsPosition().x + parviewport.w
             && parent->getAbsPosition().y <= y && y <= parent->getAbsPosition().y + parviewport.h))
             return false;
@@ -56,22 +50,13 @@ bool RUIComponent::hasFocus()
     return this->focus;
 }
 
-void RUIComponent::updateVisibleArea(int x, int y, int width, int height)
-{
-    this->visibleArea.x = x;
-    this->visibleArea.y = y;
-    this->visibleArea.w = width;
-    this->visibleArea.h = height;
-}
-
 void RUIComponent::setSize(Uint16 width, Uint16 height)
 {
     SDL_Surface *newBaseSurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, baseSurface->format->BitsPerPixel, baseSurface->format->format);
-    SDL_BlitSurface(baseSurface, NULL, newBaseSurface, NULL);
+    ENSURE_NOT(newBaseSurface, NULL);
+    ENSURE(SDL_BlitSurface(baseSurface, NULL, newBaseSurface, NULL), 0);
     SDL_FreeSurface(baseSurface);
     baseSurface = newBaseSurface;
-
-    this->updateVisibleArea(this->getAbsPosition().x, this->getAbsPosition().y, this->getSize().w, this->getSize().h);
 }
 
 void RUIComponent::setPosition(int x, int y)
@@ -87,7 +72,6 @@ void RUIComponent::setPosition(int x, int y)
     }
 
     this->setAbsPosition(x, y);
-    this->updateVisibleArea(this->getAbsPosition().x, this->getAbsPosition().y, this->getSize().w, this->getSize().h);
 }
 
 void RUIComponent::setFocus(bool focus)
@@ -148,4 +132,8 @@ void RUIComponent::onClick(Event e)
     UIComponent::onClick(e);
 
     this->setFocus(true);
+
+    Event ev;
+    ev.type = EventType::FOCUS_CHANGED;
+    ev.push();
 }

@@ -10,6 +10,7 @@ protected:
     bool overflowY;
     bool movingScrollBarV;
     bool movingScrollBarH;
+    bool overrideCompInsideBounds;
     int scrollBarMovingDistY;
     int scrollBarMovingDistX;
     int scrollBarMovingStartY;
@@ -18,6 +19,8 @@ protected:
     vector<RUIComponent*> members;
 
     bool insideBounds(int x, int y) override;
+    bool insideVScrollBarArea(int x, int y);
+    bool insideHScrollBarArea(int x, int y);
     void onMousePressed(Event e) override;
     void onMouseReleased(Event e) override;
     void onMouseMotion(Event e) override;
@@ -44,9 +47,11 @@ public:
     void setOverflowY(bool ovf);
     
     void update();
+    void scrollV(int step);
+    void scrollH(int step);
     
     void add(RUIComponent *component);
     void del(RUIComponent *component);
 
-    SDL_Surface *getSDLSurface() override;
+    void invokeEvents(Event e) override;
 };

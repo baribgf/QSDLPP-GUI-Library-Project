@@ -8,10 +8,11 @@ public:
     Event();
     ~Event();
 
-    Uint64 type;
-    Uint64 code;
+    Uint32 type;
+    Sint32 code;
     EventButton button;
     EventKey key;
+    EventWheel wheel;
 
     static Event toEvent(SDL_Event e);
     static SDL_Event toSDLEvent(Event event);

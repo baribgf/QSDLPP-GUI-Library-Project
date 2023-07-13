@@ -22,13 +22,10 @@ public:
     RUIComponent(UIComponent *parent, Uint16 width, Uint16 height);
     virtual ~RUIComponent();
 
-    SDL_Rect visibleArea;
     SDL_Rect parviewport;
     Uint64 focusTimeID;
 
     virtual bool insideBounds(int x, int y) override;
-
-    void updateVisibleArea(int x, int y, int width, int height);
 
     /**
      * Get relative position

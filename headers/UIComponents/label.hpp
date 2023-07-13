@@ -65,4 +65,7 @@ public:
     void setImage(string imgPath, Align align = Align::NORTH_WEST);
     void setImageSize(Uint32 width, Uint32 height);
     void setImageSizeAuto(bool _auto);
+
+    void setFontName(string fontName);
+    void setFontFromPath(string fontPath);
 };

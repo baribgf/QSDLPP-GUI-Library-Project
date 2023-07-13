@@ -26,10 +26,16 @@ protected:
     Uint16 FPS, frameDelay;
     RUIComponent *focusedComponent;
     virtual void onWindowResized(Event e);
+    string title;
+    int x, y, width, height;
+    bool fullscreen, centered;
 
 public:
+    int argc;
+    char const *argv[];
+
     Window(std::string title, int width, int height, bool fullscreen = false, bool centered = true);
-    ~Window();
+    virtual ~Window();
 
     void setSize(Uint16 width, Uint16 height);
     void setPosition(int x, int y);
@@ -42,7 +48,7 @@ public:
     void setCentered();
 
     void addFrame(Frame *frame);
-    void delFrame(Frame *frame);
+    void popFrame(Frame *frame);
 
     /**
      * Start the window application.

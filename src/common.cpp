@@ -30,8 +30,8 @@ void drawLineToSurface(SDL_Surface *surface, int x1, int y1, int x2, int y2, Uin
 
     while (x1 != x2 || y1 != y2)
     {
-        Uint8* pixel = pixels + (y1 * surface->pitch) + (x1 * surface->format->BytesPerPixel);
-        *(Uint32*) pixel = color;
+        Uint8 *pixel = pixels + (y1 * surface->pitch) + (x1 * surface->format->BytesPerPixel);
+        *(Uint32 *)pixel = color;
 
         int error2 = 2 * error;
         if (error2 > -dy)
@@ -47,4 +47,34 @@ void drawLineToSurface(SDL_Surface *surface, int x1, int y1, int x2, int y2, Uin
     }
 
     SDL_UnlockSurface(surface);
+}
+
+void delay(Uint32 ms)
+{
+    SDL_Delay(ms);
+}
+
+Uint64 getTicks()
+{
+    return SDL_GetTicks64();
+}
+
+string exec(const char *cmd)
+{
+    array<char, 128> buffer;
+    string output;
+
+    FILE *pipe = popen(cmd, "r");
+    if (pipe)
+    {
+        while (!feof(pipe))
+        {
+            if (fgets(buffer.data(), 128, pipe) != nullptr)
+                output += buffer.data();
+        }
+
+        pclose(pipe);
+    }
+
+    return output;
 }

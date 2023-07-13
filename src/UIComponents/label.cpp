@@ -12,11 +12,17 @@ Label::Label(RUIComponent *parent, string text, int width, int height) : RUIComp
     this->imgPath = "";
     this->textAlign = Align::NORTH_WEST;
     this->bordersVisible = false;
-    this->FONT_PATH = "/usr/share/fonts/JetBrains/ttf/JetBrainsMono-Regular.ttf";
+
+    #ifdef __linux__
+    this->FONT_PATH = exec("fc-match --format=%{file} monospace");
+    #elif _WIN32
+    this->FONT_PATH = exec("dir /s /b %WINDIR%\\Fonts\\*consolas*.ttf");
+    #endif
+
     this->DEFAULT_BG = {WHITE};
     this->DEFAULT_FG = {BLACK};
     this->DEFAULT_BORDERS_COLOR = {BLACK};
-    
+
     this->setTextSize(pixelsToPoints(height));
     this->setPosition(0, 0);
     this->setFg(this->DEFAULT_FG);
@@ -149,17 +155,21 @@ void Label::drawText()
     {
         SDL_Rect r = {this->textX, this->textY, this->getSize().w, this->getSize().h};
         TTF_Font *font = TTF_OpenFont(this->FONT_PATH.c_str(), this->textSize);
+        ENSURE_NOT(font, NULL);
 
         SDL_Surface *textSurface = TTF_RenderText_Blended(
             font,
             text.c_str(),
             {this->fg.r, this->fg.g, this->fg.b, this->fg.a});
 
-        SDL_BlitSurface(
-            textSurface,
-            NULL,
-            this->baseSurface,
-            &r);
+        ENSURE_NOT(textSurface, NULL);
+
+        ENSURE(SDL_BlitSurface(
+                   textSurface,
+                   NULL,
+                   this->baseSurface,
+                   &r),
+               0);
 
         this->textW = textSurface->w;
         this->textH = textSurface->h;
@@ -238,9 +248,31 @@ void Label::setBordersColor(Color color)
     this->drawBorders();
 }
 
+void Label::setFontName(string fontName)
+{
+    #ifdef __linux__
+        this->FONT_PATH = exec((string("fc-match --format=%{file} ") + "\"" + fontName + "\"").c_str());
+    #elif _WIN32
+        this->FONT_PATH = exec((string("dir /s /b %WINDIR%\\Fonts\\*") + fontName + "*.ttf").c_str());
+    #endif
+
+    this->update();
+    this->setTextAlign(this->textAlign);
+}
+
+void Label::setFontFromPath(string fontPath)
+{
+    this->FONT_PATH = fontPath;
+    
+    this->update();
+    this->setTextAlign(this->textAlign);
+}
+
 void Label::drawImage()
 {
     SDL_Surface *imgSurface = IMG_Load(this->imgPath.c_str());
+    ENSURE_NOT(imgSurface, NULL);
+
     Point pos = this->getPosition();
     Dimension size = this->getSize();
     SDL_Rect destRect;

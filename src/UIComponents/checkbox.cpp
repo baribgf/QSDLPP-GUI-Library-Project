@@ -55,9 +55,10 @@ void CheckBox::drawCheckBox()
         int hpad = 3;
         int vpad = 3;
         SDL_Surface *s = SDL_CreateRGBSurfaceWithFormat(0, this->cbW - 2 * hpad, this->cbH - 2 * vpad, this->baseSurface->format->BitsPerPixel, this->baseSurface->format->format);
-        SDL_FillRect(s, NULL, color);
+        ENSURE_NOT(s, NULL);
+        ENSURE(SDL_FillRect(s, NULL, color), 0);
         SDL_Rect r = {this->cbX + hpad, this->cbY + vpad, s->w, s->h};
-        SDL_BlitSurface(s, NULL, this->baseSurface, &r);
+        ENSURE(SDL_BlitSurface(s, NULL, this->baseSurface, &r), 0);
     }
 }
 

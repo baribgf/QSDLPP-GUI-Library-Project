@@ -5,7 +5,7 @@ TextInput::TextInput(RUIComponent *parent, int width, int height) : Label(parent
     this->cursorIndex = 0;
     this->uppercase = false;
     this->setBordersVisible(true);
-    this->setTextAlign(Align::CENTER);
+    this->setTextAlign(Align::WEST);
 }
 
 TextInput::~TextInput()
@@ -19,10 +19,15 @@ void TextInput::drawCursor()
     Uint8 hSpace = this->text.length() > 0 ? width * 0.005 : width * 0.02;
     Uint8 vSpace = this->getSize().h * 0.12;
 
-    Uint8 cursorX;
+    Uint32 cursorX;
     if (this->text.length() > 0)
     {
         cursorX = (this->textW / this->text.length()) * this->cursorIndex + hSpace + this->textX;
+
+        if (cursorX > width) // in text overflow..
+        {
+            cursorX = width * (1 - 0.02);
+        }
     }
     else
     {

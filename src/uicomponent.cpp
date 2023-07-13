@@ -16,8 +16,11 @@ UIComponent::UIComponent(Uint16 width, Uint16 height)
     this->onMouseMotionHandlerPtr = nullptr;
 
     this->DEFAULT_CURSOR = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
+    ENSURE_NOT(this->DEFAULT_CURSOR, NULL);
     this->HAND_CURSOR = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
+    ENSURE_NOT(this->HAND_CURSOR, NULL);
     this->baseSurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_RGBA32);
+    ENSURE_NOT(this->baseSurface, NULL);
 
     this->setAbsPosition(0, 0);
     this->fill(fillColor);
@@ -51,7 +54,8 @@ Point UIComponent::getAbsPosition()
 void UIComponent::setSize(Uint16 width, Uint16 height)
 {
     SDL_Surface *newBaseSurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, baseSurface->format->BitsPerPixel, baseSurface->format->format);
-    SDL_BlitSurface(baseSurface, NULL, newBaseSurface, NULL);
+    ENSURE_NOT(newBaseSurface, NULL);
+    ENSURE(SDL_BlitSurface(baseSurface, NULL, newBaseSurface, NULL), 0);
     SDL_FreeSurface(baseSurface);
     baseSurface = newBaseSurface;
 }
@@ -69,7 +73,7 @@ void UIComponent::setAbsPosition(int x, int y)
 
 void UIComponent::fill(Color color)
 {
-    SDL_FillRect(this->baseSurface, NULL, SDL_MapRGBA(this->baseSurface->format, color.r, color.g, color.b, color.a));
+    ENSURE(SDL_FillRect(this->baseSurface, NULL, SDL_MapRGBA(this->baseSurface->format, color.r, color.g, color.b, color.a)), 0);
     this->fillColor = color;
 }
 
