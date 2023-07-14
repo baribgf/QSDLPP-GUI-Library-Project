@@ -1,23 +1,12 @@
 #include "headers/application.hpp"
 #include "headers/window.hpp"
 #include "headers/UIComponents/frame.hpp"
-#include "headers/UIComponents/textinput.hpp"
+#include "headers/UIComponents/canvas.hpp"
 
 int main(int argc, char const *argv[])
 {
 	Application app(argc, argv);
-
-	Window window("Main Window", 800, 500);
-
-	Frame frame(nullptr, 800, 500);
-	frame.setBg({BLUE});
-
-	TextInput t(&frame, 200, 30);
-	t.setPosition(100, 100);
-	
-	frame.add(&t);
-
-	window.addFrame(&frame);
+	Window window("Main Window", 800, 500, WindowFlags::WINDOW_BORDERLESS);
 
 	app.setWindow(&window);
 	app.exec();

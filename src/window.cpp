@@ -1,20 +1,19 @@
 #include "../headers/window.hpp"
 
-Window::Window(string title, int width, int height, bool fullscreen,
-			   bool centered) : title(title), width(width), height(height), fullscreen(fullscreen), centered(centered)
+Window::Window(string title, int width, int height, Uint32 flags) : title(title), width(width), height(height), flags(flags)
 {
-	this->FPS = 90;
+	this->FPS = 120;
 	this->frameDelay = 1000 / this->FPS;
 	this->running = true;
 	this->thereWasPendingEvent = false;
 	this->focusedComponent = nullptr;
 	this->argc = 0;
 
+	this->x = SDL_WINDOWPOS_CENTERED;
+	this->y = SDL_WINDOWPOS_CENTERED;
+
 	SDL_DisplayMode dm;
 	ENSURE(SDL_GetCurrentDisplayMode(0, &dm), 0);
-
-	this->x = centered ? SDL_WINDOWPOS_CENTERED : randint(0, dm.w - width);
-	this->y = centered ? SDL_WINDOWPOS_CENTERED : randint(0, dm.h - height);
 
 	this->baseWindow = nullptr;
 	this->mainRenderer = nullptr;
@@ -67,7 +66,7 @@ void Window::exec()
 {
 	this->baseWindow = SDL_CreateWindow(this->title.c_str(), x, y, width,
 										height,
-										(fullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_SHOWN) | SDL_WINDOW_RESIZABLE);
+										this->flags);
 	ENSURE_NOT(this->baseWindow, NULL);
 
 	this->mainRenderer = SDL_CreateRenderer(this->baseWindow, -1, 0);
@@ -121,7 +120,22 @@ void Window::setPosition(int x, int y)
 
 void Window::setCentered()
 {
-	this->setPosition(SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	this->x = SDL_WINDOWPOS_CENTERED;
+	this->y = SDL_WINDOWPOS_CENTERED;
+}
+
+void Window::setFullscreen(bool fscreen)
+{
+	if (fscreen)
+	{
+		if (this->baseWindow)
+			SDL_SetWindowFullscreen(this->baseWindow, SDL_WINDOW_FULLSCREEN);
+	}
+	else
+	{
+		if (this->baseWindow)
+			SDL_SetWindowFullscreen(this->baseWindow, 0);
+	}
 }
 
 void Window::setFPS(Uint16 fps)

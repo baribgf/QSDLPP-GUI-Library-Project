@@ -4,7 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${vcpkgRoot}/x64-linux/include"
+                "${vcpkgRoot}/x64-linux/include",
+                "/usr/include/SDL2"
             ],
             "defines": [],
             "cStandard": "c17",

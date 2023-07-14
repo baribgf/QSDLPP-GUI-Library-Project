@@ -13,7 +13,13 @@ protected:
     bool mousePressed;
     bool mouseReleased;
     bool visible;
-    SDL_Cursor *DEFAULT_CURSOR, *HAND_CURSOR;
+
+    void *clickHandlerData;
+    void *pressHandlerData;
+    void *releaseHandlerData;
+    void *enterHandlerData;
+    void *leaveHandlerData;
+    void *motionHandlerData;
 
     virtual void onClick(Event e);
     virtual void onMousePressed(Event e);
@@ -22,12 +28,12 @@ protected:
     virtual void onMouseLeaved(Event e);
     virtual void onMouseMotion(Event e);
 
-    void (*onClickHandlerPtr)(Event);
-    void (*onMousePressedHandlerPtr)(Event);
-    void (*onMouseReleasedHandlerPtr)(Event);
-    void (*onMouseEnteredHandlerPtr)(Event);
-    void (*onMouseLeavedHandlerPtr)(Event);
-    void (*onMouseMotionHandlerPtr)(Event);
+    void (*onClickHandlerPtr)(Event, void*);
+    void (*onMousePressedHandlerPtr)(Event, void*);
+    void (*onMouseReleasedHandlerPtr)(Event, void*);
+    void (*onMouseEnteredHandlerPtr)(Event, void*);
+    void (*onMouseLeavedHandlerPtr)(Event, void*);
+    void (*onMouseMotionHandlerPtr)(Event, void*);
 
     virtual bool insideBounds(int x, int y);
 
@@ -57,12 +63,12 @@ public:
      */
     virtual void invokeEvents(Event event);
 
-    void setOnClickHandler(void (*handler)(Event e));
-    void setOnMousePressedHandler(void (*handler)(Event e));
-    void setOnMouseReleasedHandler(void (*handler)(Event e));
-    void setOnMouseEnteredHandler(void (*handler)(Event e));
-    void setOnMouseLeavedHandler(void (*handler)(Event e));
-    void setOnMouseMotionHandler(void (*handler)(Event e));
+    void setOnClickHandler(void (*handler)(Event e, void*), void *data);
+    void setOnMousePressedHandler(void (*handler)(Event e, void*), void *data);
+    void setOnMouseReleasedHandler(void (*handler)(Event e, void*), void *data);
+    void setOnMouseEnteredHandler(void (*handler)(Event e, void*), void *data);
+    void setOnMouseLeavedHandler(void (*handler)(Event e, void*), void *data);
+    void setOnMouseMotionHandler(void (*handler)(Event e, void*), void *data);
 
     virtual ~UIComponent();
 };

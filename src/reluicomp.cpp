@@ -7,6 +7,7 @@ RUIComponent::RUIComponent(UIComponent *parent, Uint16 width, Uint16 height) : U
     this->setFocus(false);
     this->onKeyPressedHandlerPtr = nullptr;
     this->onKeyReleasedHandlerPtr = nullptr;
+    this->setPosition(0, 0);
 }
 
 Point RUIComponent::getPosition()
@@ -105,26 +106,28 @@ RUIComponent::~RUIComponent()
 
 // Event handlers
 
-void RUIComponent::setOnKeyPressedHandler(void (*handler)(Event e))
+void RUIComponent::setOnKeyPressedHandler(void (*handler)(Event e, void*), void *data)
 {
     this->onKeyPressedHandlerPtr = handler;
+    this->keyPressHandlerData = data;
 }
 
-void RUIComponent::setOnKeyReleasedHandler(void (*handler)(Event e))
+void RUIComponent::setOnKeyReleasedHandler(void (*handler)(Event e, void*), void *data)
 {
     this->onKeyReleasedHandlerPtr = handler;
+    this->keyReleaseHandlerData = data;
 }
 
 void RUIComponent::onKeyPressed(Event e)
 {
     if (this->onKeyPressedHandlerPtr)
-        this->onKeyPressedHandlerPtr(e);
+        this->onKeyPressedHandlerPtr(e, keyPressHandlerData);
 }
 
 void RUIComponent::onKeyReleased(Event e)
 {
     if (this->onKeyReleasedHandlerPtr)
-        this->onKeyReleasedHandlerPtr(e);
+        this->onKeyReleasedHandlerPtr(e, keyReleaseHandlerData);
 }
 
 void RUIComponent::onClick(Event e)

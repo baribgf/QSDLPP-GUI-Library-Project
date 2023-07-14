@@ -28,13 +28,13 @@ protected:
     virtual void onWindowResized(Event e);
     string title;
     int x, y, width, height;
-    bool fullscreen, centered;
+    Uint32 flags;
 
 public:
     int argc;
     char const *argv[];
 
-    Window(std::string title, int width, int height, bool fullscreen = false, bool centered = true);
+    Window(std::string title, int width, int height, Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     virtual ~Window();
 
     void setSize(Uint16 width, Uint16 height);
@@ -46,6 +46,7 @@ public:
     Uint16 getFPS();
 
     void setCentered();
+    void setFullscreen(bool fscreen);
 
     void addFrame(Frame *frame);
     void popFrame(Frame *frame);

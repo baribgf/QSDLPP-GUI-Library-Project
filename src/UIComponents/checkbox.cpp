@@ -2,6 +2,7 @@
 
 CheckBox::CheckBox(RUIComponent *parent, string text, int width, int height) : Label(parent, text, width, height)
 {
+    this->boxColor = {55, 55, 55, 255};
     this->checked = false;
     this->cbW = 18;
     this->cbH = 18;
@@ -24,7 +25,7 @@ bool CheckBox::isChecked()
 
 void CheckBox::drawCheckBox()
 {
-    Uint32 color = SDL_MapRGBA(this->baseSurface->format, 55, 55, 55, 255);
+    Uint32 color = SDL_MapRGBA(this->baseSurface->format, this->boxColor.r, this->boxColor.g, this->boxColor.b, this->boxColor.a);
 
     drawLineToSurface( // top line
         this->baseSurface,
@@ -127,6 +128,12 @@ void CheckBox::setTextAlign(Align a)
 void CheckBox::setChecked(bool checked)
 {
     this->checked = checked;
+    this->update();
+}
+
+void CheckBox::setBoxColor(Color c)
+{
+    this->boxColor = c;
     this->update();
 }
 

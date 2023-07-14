@@ -5,9 +5,6 @@
 class Button : public Label
 {
 protected:
-    Color DEFAULT_HOVER_BG;
-    Color DEFAULT_HOVER_FG;
-
     void onClick(Event e) override;
     void onMouseEntered(Event e) override;
     void onMouseLeaved(Event e) override;

@@ -10,11 +10,14 @@ protected:
     bool focus;
     UIComponent *parent;
 
+    void *keyPressHandlerData;
+    void *keyReleaseHandlerData;
+
     virtual void onKeyPressed(Event e);
     virtual void onKeyReleased(Event e);
 
-    void (*onKeyPressedHandlerPtr)(Event);
-    void (*onKeyReleasedHandlerPtr)(Event);
+    void (*onKeyPressedHandlerPtr)(Event, void*);
+    void (*onKeyReleasedHandlerPtr)(Event, void*);
 
     void onClick(Event e) override;
 
@@ -45,6 +48,6 @@ public:
 
     void invokeEvents(Event event) override;
 
-    void setOnKeyPressedHandler(void (*handler)(Event e));
-    void setOnKeyReleasedHandler(void (*handler)(Event e));
+    void setOnKeyPressedHandler(void (*handler)(Event e, void*), void *data);
+    void setOnKeyReleasedHandler(void (*handler)(Event e, void*), void *data);
 };

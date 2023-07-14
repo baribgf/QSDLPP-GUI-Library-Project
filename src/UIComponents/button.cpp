@@ -2,8 +2,6 @@
 
 Button::Button(RUIComponent *parent, string text, int width, int height) : Label(parent, text, width, height)
 {
-    this->DEFAULT_HOVER_BG = {BLACK};
-    this->DEFAULT_HOVER_FG = {WHITE};
     this->bordersColor = this->DEFAULT_BORDERS_COLOR;
     this->setBg(this->DEFAULT_BG);
     this->setFg(this->DEFAULT_FG);
@@ -29,24 +27,16 @@ void Button::onClick(Event e)
 
 void Button::onMouseEntered(Event e)
 {
-    this->setBg(this->DEFAULT_HOVER_BG);
-    this->setFg(this->DEFAULT_HOVER_FG);
-    SDL_SetCursor(HAND_CURSOR);
-    SDL_ShowCursor(SDL_ENABLE);
+    setCursor(Cursor::CURSOR_HAND);
 
-    if (this->onMouseEnteredHandlerPtr)
-        this->onMouseEnteredHandlerPtr(e);
+    Label::onMouseEntered(e);
 }
 
 void Button::onMouseLeaved(Event e)
 {
-    this->setBg(this->DEFAULT_BG);
-    this->setFg(this->DEFAULT_FG);
-    SDL_SetCursor(DEFAULT_CURSOR);
-    SDL_ShowCursor(SDL_ENABLE);
-    
-    if (this->onMouseLeavedHandlerPtr != nullptr)
-        this->onMouseLeavedHandlerPtr(e);
+    setCursor(Cursor::CURSOR_ARROW);
+
+    Label::onMouseLeaved(e);
 }
 
 void Button::onKeyReleased(Event e)

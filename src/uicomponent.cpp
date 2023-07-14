@@ -15,10 +15,6 @@ UIComponent::UIComponent(Uint16 width, Uint16 height)
     this->onMouseLeavedHandlerPtr = nullptr;
     this->onMouseMotionHandlerPtr = nullptr;
 
-    this->DEFAULT_CURSOR = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_ARROW);
-    ENSURE_NOT(this->DEFAULT_CURSOR, NULL);
-    this->HAND_CURSOR = SDL_CreateSystemCursor(SDL_SYSTEM_CURSOR_HAND);
-    ENSURE_NOT(this->HAND_CURSOR, NULL);
     this->baseSurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_RGBA32);
     ENSURE_NOT(this->baseSurface, NULL);
 
@@ -127,68 +123,74 @@ UIComponent::~UIComponent()
 
 // Event handlers
 
-void UIComponent::setOnClickHandler(void (*handler)(Event e))
+void UIComponent::setOnClickHandler(void (*handler)(Event e, void *data), void *data)
 {
     this->onClickHandlerPtr = handler;
+    this->clickHandlerData = data;
 }
 
-void UIComponent::setOnMousePressedHandler(void (*handler)(Event e))
+void UIComponent::setOnMousePressedHandler(void (*handler)(Event e, void *data), void *data)
 {
     this->onMousePressedHandlerPtr = handler;
+    this->pressHandlerData = data;
 }
 
-void UIComponent::setOnMouseReleasedHandler(void (*handler)(Event e))
+void UIComponent::setOnMouseReleasedHandler(void (*handler)(Event e, void *data), void *data)
 {
     this->onMouseReleasedHandlerPtr = handler;
+    this->releaseHandlerData = data;
 }
 
-void UIComponent::setOnMouseEnteredHandler(void (*handler)(Event e))
+void UIComponent::setOnMouseEnteredHandler(void (*handler)(Event e, void *data), void *data)
 {
     this->onMouseEnteredHandlerPtr = handler;
+    this->enterHandlerData = data;
 }
 
-void UIComponent::setOnMouseLeavedHandler(void (*handler)(Event e))
+void UIComponent::setOnMouseLeavedHandler(void (*handler)(Event e, void *data), void *data)
 {
     this->onMouseLeavedHandlerPtr = handler;
+    this->leaveHandlerData = data;
 }
 
-void UIComponent::setOnMouseMotionHandler(void (*handler)(Event e))
+void UIComponent::setOnMouseMotionHandler(void (*handler)(Event e, void *data), void *data)
 {
     this->onMouseMotionHandlerPtr = handler;
+    this->motionHandlerData = data;
 }
 
 void UIComponent::onClick(Event e)
 {
     if (this->onClickHandlerPtr)
-        this->onClickHandlerPtr(e);
+        this->onClickHandlerPtr(e, clickHandlerData);
 }
 
 void UIComponent::onMousePressed(Event e)
 {
     if (this->onMousePressedHandlerPtr)
-        this->onMousePressedHandlerPtr(e);
+        this->onMousePressedHandlerPtr(e, pressHandlerData);
 }
 
 void UIComponent::onMouseReleased(Event e)
 {
     if (this->onMouseReleasedHandlerPtr)
-        this->onMouseReleasedHandlerPtr(e);
+        this->onMouseReleasedHandlerPtr(e, releaseHandlerData);
 }
 
 void UIComponent::onMouseEntered(Event e)
 {
     if (this->onMouseEnteredHandlerPtr)
-        this->onMouseEnteredHandlerPtr(e);
+        this->onMouseEnteredHandlerPtr(e, enterHandlerData);
 }
 
 void UIComponent::onMouseLeaved(Event e)
 {
     if (this->onMouseLeavedHandlerPtr)
-        this->onMouseLeavedHandlerPtr(e);
+        this->onMouseLeavedHandlerPtr(e, leaveHandlerData);
 }
 
 void UIComponent::onMouseMotion(Event e)
 {
     if (this->onMouseMotionHandlerPtr)
-        this->onMouseMotionHandlerPtr(e);
+        this->onMouseMotionHandlerPtr(e, motionHandlerData);
 }
