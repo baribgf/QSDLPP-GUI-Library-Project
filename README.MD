@@ -1,6 +1,6 @@
 # QSDL++ GUI Library Project
 
-This is a simple lightweight gui library for C++ based on SDL2.
+The Quick Simple DirectMedia Layer ++ library is a simple lightweight gui library for C++ based on SDL2.
 
 ## Testing
 
@@ -8,14 +8,19 @@ This is a simple lightweight gui library for C++ based on SDL2.
 
 ```bash
 cd test
-cmake . 
+cmake .
 make
 make run
 ```
 
 ## Installation
 
-* To install the library do the following:
+1. Required libraries:
+    - SDL2
+    - SDL2_ttf
+    - SDL2_image
+
+2. Build and install the library doing the following:
 
 ```bash
 mkdir build
