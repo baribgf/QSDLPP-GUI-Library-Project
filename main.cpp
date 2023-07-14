@@ -6,7 +6,7 @@
 int main(int argc, char const *argv[])
 {
 	Application app(argc, argv);
-	Window window("Main Window", 800, 500, WindowFlags::WINDOW_BORDERLESS);
+	Window window("Main Window", 800, 500);
 
 	app.setWindow(&window);
 	app.exec();
