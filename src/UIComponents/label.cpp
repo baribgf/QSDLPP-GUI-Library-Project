@@ -1,4 +1,4 @@
-#include "../../headers/UIComponents/label.hpp"
+#include "../../QSDL++/UIComponents/Label"
 
 Label::Label(RUIComponent *parent, string text, int width, int height) : RUIComponent(parent, width, height), text(text)
 {

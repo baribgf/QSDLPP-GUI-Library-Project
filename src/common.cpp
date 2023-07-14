@@ -1,4 +1,4 @@
-#include "../headers/common.hpp"
+#include "../QSDL++/Common"
 
 int randint(int min, int max)
 {

@@ -1,4 +1,4 @@
-#include "../headers/window.hpp"
+#include "../QSDL++/Window"
 
 Window::Window(string title, int width, int height, Uint32 flags) : title(title), width(width), height(height), flags(flags)
 {

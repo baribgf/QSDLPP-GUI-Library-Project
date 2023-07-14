@@ -1,6 +1,11 @@
+#ifndef QSDLPP_RUICOMPONENT
+#define QSDLPP_RUICOMPONENT
+
 #pragma once
 
-#include "uicomponent.hpp"
+#ifndef QSDLPP_UICOMPONENT
+    #include "UIComponent"
+#endif
 
 class RUIComponent : public UIComponent
 {
@@ -51,3 +56,5 @@ public:
     void setOnKeyPressedHandler(void (*handler)(Event e, void*), void *data);
     void setOnKeyReleasedHandler(void (*handler)(Event e, void*), void *data);
 };
+
+#endif

@@ -1,7 +1,11 @@
+#ifndef QSDLPP_RADIOGROUP
+#define QSDLPP_RADIOGROUP
+
 #pragma once
 
-#include "../common.hpp"
-#include "radiobutton.hpp"
+#ifndef QSDLPP_RADIOBUTTON
+    #include "RadioButton"
+#endif
 
 class RadioGroup
 {
@@ -17,3 +21,5 @@ public:
     void add(RadioButton *radioButton);
     void del(RadioButton *radioButton);
 };
+
+#endif

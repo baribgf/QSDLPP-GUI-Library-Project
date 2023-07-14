@@ -1,4 +1,4 @@
-#include "../headers/reluicomp.hpp"
+#include "../QSDL++/RUIComponent"
 
 RUIComponent::RUIComponent(UIComponent *parent, Uint16 width, Uint16 height) : UIComponent(width, height)
 {

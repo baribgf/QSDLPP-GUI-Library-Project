@@ -1,4 +1,4 @@
-#include "../headers/thread.hpp"
+#include "../QSDL++/Thread"
 
 Thread::Thread(string name, void *data) : name(name), data(data)
 {

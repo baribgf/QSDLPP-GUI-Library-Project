@@ -4,3 +4,5 @@
 /build/*
 .project
 .cproject
+/test/*
+!/test/test.cpp

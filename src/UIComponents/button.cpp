@@ -1,4 +1,4 @@
-#include "../../headers/UIComponents/button.hpp"
+#include "../../QSDL++/UIComponents/Button"
 
 Button::Button(RUIComponent *parent, string text, int width, int height) : Label(parent, text, width, height)
 {

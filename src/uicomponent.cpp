@@ -1,4 +1,4 @@
-#include "../headers/uicomponent.hpp"
+#include "../QSDL++/UIComponent"
 
 UIComponent::UIComponent(Uint16 width, Uint16 height)
 {

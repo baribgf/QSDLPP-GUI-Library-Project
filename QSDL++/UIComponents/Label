@@ -1,6 +1,11 @@
+#ifndef QSDLPP_LABEL
+#define QSDLPP_LABEL
+
 #pragma once
 
-#include "../reluicomp.hpp"
+#ifndef QSDLPP_RUICOMPONENT
+    #include "../RUIComponent"
+#endif
 
 class Label : public RUIComponent
 {
@@ -69,3 +74,5 @@ public:
     void setFontName(string fontName);
     void setFontFromPath(string fontPath);
 };
+
+#endif

@@ -1,6 +1,11 @@
+#ifndef QSDLPP_THREAD
+#define QSDLPP_THREAD
+
 #pragma once
 
-#include "common.hpp"
+#ifndef QSDLPP_COMMON
+	#include "Common"
+#endif
 
 class Thread
 {
@@ -27,3 +32,5 @@ public:
 
 	void setTarget(int (*fnPtr)(void *));
 };
+
+#endif

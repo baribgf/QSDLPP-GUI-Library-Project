@@ -1,4 +1,4 @@
-#include "../../headers/UIComponents/radiogroup.hpp"
+#include "../../QSDL++/UIComponents/RadioGroup"
 
 RadioGroup::RadioGroup()
 {

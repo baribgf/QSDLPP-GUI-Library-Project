@@ -1,5 +1,5 @@
-#include "headers/application.hpp"
-#include "headers/window.hpp"
+#include "../QSDL++/Application"
+#include "../QSDL++/Window"
 
 int main(int argc, char const *argv[])
 {

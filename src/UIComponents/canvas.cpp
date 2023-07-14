@@ -1,4 +1,4 @@
-#include "../../headers/UIComponents/canvas.hpp"
+#include "../../QSDL++/UIComponents/Canvas"
 
 Canvas::Canvas(UIComponent *parent, Uint16 width, Uint16 height) : RUIComponent(parent, width, height)
 {

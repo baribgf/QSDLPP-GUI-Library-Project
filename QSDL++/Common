@@ -1,5 +1,5 @@
-#ifndef COMMON_HEADER
-#define COMMON_HEADER
+#ifndef QSDLPP_COMMON
+#define QSDLPP_COMMON
 
 #ifndef _GLIBCXX_IOSTREAM
 #include <iostream>

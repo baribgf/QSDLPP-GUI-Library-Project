@@ -1,7 +1,11 @@
+#ifndef QSDLPP_UICOMPONENT
+#define QSDLPP_UICOMPONENT
+
 #pragma once
 
-#include "common.hpp"
-#include "event.hpp"
+#ifndef QSDLPP_EVENT
+    #include "Event"
+#endif
 
 class UIComponent
 {
@@ -72,3 +76,5 @@ public:
 
     virtual ~UIComponent();
 };
+
+#endif

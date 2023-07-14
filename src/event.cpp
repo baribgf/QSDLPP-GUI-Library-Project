@@ -1,4 +1,4 @@
-#include "../headers/event.hpp"
+#include "../QSDL++/Event"
 
 Event::Event()
 {

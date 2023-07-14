@@ -1,6 +1,9 @@
+#ifndef QSDLPP_BUTTON
+#define QSDLPP_BUTTON
+
 #pragma once
 
-#include "label.hpp"
+#include "Label"
 
 class Button : public Label
 {
@@ -18,3 +21,5 @@ public:
 
     void setFocus(bool focus) override;
 };
+
+#endif

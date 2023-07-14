@@ -1,8 +1,15 @@
+#ifndef QSDLPP_APPLICATION
+#define QSDLPP_APPLICATION
+
 #pragma once
 
-#include "common.hpp"
-#include "window.hpp"
-#include "thread.hpp"
+#ifndef QSDLPP_WINDOW
+	#include "Window"
+#endif
+
+#ifndef QSDLPP_THREAD
+	#include "Thread"
+#endif
 
 class Application
 {
@@ -20,3 +27,5 @@ public:
 
 	void exec();
 };
+
+#endif

@@ -1,4 +1,4 @@
-#include "../../headers/UIComponents/checkbox.hpp"
+#include "../../QSDL++/UIComponents/CheckBox"
 
 CheckBox::CheckBox(RUIComponent *parent, string text, int width, int height) : Label(parent, text, width, height)
 {

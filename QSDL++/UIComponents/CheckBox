@@ -1,6 +1,11 @@
+#ifndef QSDLPP_CHECKBOX
+#define QSDLPP_CHECKBOX
+
 #pragma once
 
-#include "label.hpp"
+#ifndef QSDLPP_LABEL
+    #include "Label"
+#endif
 
 class CheckBox : public Label
 {
@@ -23,3 +28,5 @@ public:
 
     void setBoxColor(Color c);
 };
+
+#endif

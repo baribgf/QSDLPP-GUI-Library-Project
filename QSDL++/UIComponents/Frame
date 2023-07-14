@@ -1,6 +1,11 @@
+#ifndef QSDLPP_FRAME
+#define QSDLPP_FRAME
+
 #pragma once
 
-#include "../../headers/reluicomp.hpp"
+#ifndef QSDLPP_RUICOMPONENT
+    #include "../../QSDL++/RUIComponent"
+#endif
 
 class Frame : public RUIComponent
 {
@@ -55,3 +60,5 @@ public:
 
     void invokeEvents(Event e) override;
 };
+
+#endif

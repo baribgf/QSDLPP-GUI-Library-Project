@@ -1,4 +1,4 @@
-#include "../../headers/UIComponents/frame.hpp"
+#include "../../QSDL++/UIComponents/Frame"
 
 Frame::Frame(RUIComponent *parent, int width, int height) : RUIComponent(parent, width, height)
 {

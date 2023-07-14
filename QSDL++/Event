@@ -1,6 +1,11 @@
+#ifndef QSDLPP_EVENT
+#define QSDLPP_EVENT
+
 #pragma once
 
-#include "common.hpp"
+#ifndef QSDLPP_COMMON
+    #include "Common"
+#endif
 
 class Event
 {
@@ -19,3 +24,5 @@ public:
 
     void push();
 };
+
+#endif

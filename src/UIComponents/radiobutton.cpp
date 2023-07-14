@@ -1,4 +1,4 @@
-#include "../../headers/UIComponents/radiobutton.hpp"
+#include "../../QSDL++/UIComponents/RadioButton"
 
 RadioButton::RadioButton(RUIComponent *parent, std::string text, int width, int height) : CheckBox(parent, text, width, height)
 {

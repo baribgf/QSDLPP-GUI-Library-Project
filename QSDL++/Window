@@ -1,8 +1,11 @@
+#ifndef QSDLPP_WINDOW
+#define QSDLPP_WINDOW
+
 #pragma once
 
-#include "common.hpp"
-#include "uicomponent.hpp"
-#include "UIComponents/frame.hpp"
+#ifndef QSDLPP_FRAME
+    #include "UIComponents/Frame"
+#endif
 
 class Window
 {
@@ -56,3 +59,5 @@ public:
      */
     void exec();
 };
+
+#endif

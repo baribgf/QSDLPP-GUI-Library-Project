@@ -1,4 +1,4 @@
-#include "../headers/application.hpp"
+#include "../QSDL++/Application"
 
 Application::Application(int argc, char const *argv[])
 {

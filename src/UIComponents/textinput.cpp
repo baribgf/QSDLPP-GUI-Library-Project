@@ -1,4 +1,4 @@
-#include "../../headers/UIComponents/textinput.hpp"
+#include "../../QSDL++/UIComponents/TextInput"
 
 #define DISPLAY_NUMBER this->getSize().w / (this->textW / this->text.length())
 

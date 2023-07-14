@@ -1,7 +1,15 @@
+#ifndef QSDLPP_CANVAS
+#define QSDLPP_CANVAS
+
 #pragma once
 
-#include "../common.hpp"
-#include "../reluicomp.hpp"
+#ifndef QSDLPP_COMMON
+    #include "../Common"
+#endif
+
+#ifndef QSDLPP_RUICOMPONENT
+    #include "../RUIComponent"
+#endif
 
 class Canvas : public RUIComponent
 {
@@ -22,3 +30,5 @@ public:
 
     void setDrawColor(Color color);
 };
+
+#endif
