@@ -109,6 +109,25 @@ Uint16 Window::getFPS()
 	return this->FPS;
 }
 
+string Window::getTitle()
+{
+	return string(SDL_GetWindowTitle(this->baseWindow));
+}
+
+Dimension Window::getMaximumSize()
+{
+	int w, h;
+	SDL_GetWindowMaximumSize(this->baseWindow, &w, &h);
+	return {(Uint32)w, (Uint32)h};
+}
+
+Dimension Window::getMinimumSize()
+{
+	int w, h;
+	SDL_GetWindowMinimumSize(this->baseWindow, &w, &h);
+	return {(Uint32)w, (Uint32)h};
+}
+
 void Window::setSize(Uint16 width, Uint16 height)
 {
 	SDL_SetWindowSize(this->baseWindow, width, height);
@@ -143,6 +162,46 @@ void Window::setFPS(Uint16 fps)
 {
 	this->FPS = fps;
 	this->frameDelay = 1000 / this->FPS;
+}
+
+void Window::setTitle(string title)
+{
+	SDL_SetWindowTitle(this->baseWindow, title.c_str());
+}
+
+void Window::setMaximized()
+{
+	SDL_MaximizeWindow(this->baseWindow);
+}
+
+void Window::setMinimized()
+{
+	SDL_MinimizeWindow(this->baseWindow);
+}
+
+void Window::setMaximumSize(int width, int height)
+{
+	SDL_SetWindowMaximumSize(this->baseWindow, width, height);
+}
+
+void Window::setMinimumSize(int width, int height)
+{
+	SDL_SetWindowMinimumSize(this->baseWindow, width, height);
+}
+
+void Window::setBordered(bool bordered)
+{
+	SDL_SetWindowBordered(this->baseWindow, bordered ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE);
+}
+
+void Window::setAlwaysOnTop(bool onTop)
+{
+	SDL_SetWindowAlwaysOnTop(this->baseWindow, onTop ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE);
+}
+
+void Window::setResizable(bool resizable)
+{
+	SDL_SetWindowResizable(this->baseWindow, resizable ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE);
 }
 
 void Window::renderComponent(UIComponent *uicomponent)
@@ -191,7 +250,7 @@ void Window::renderFrame(Frame *frame)
 {
 	if (!frame->isVisible())
 		return;
-		
+
 	frame->fill(frame->getFillColor());
 
 	// render all frame content
@@ -248,7 +307,7 @@ void Window::renderFrame(Frame *frame)
 			childComp->invokeEvents(Event::toEvent(this->event));
 		}
 	}
-	
+
 	// for focusing purposes ..
 	if (frame->hasFocus() && frame != this->focusedComponent)
 	{

@@ -41,17 +41,26 @@ public:
     virtual ~Window();
     
     RUIComponent *getFocusedComponent();
+    Dimension getSize();
+    Point getPosition();
+    Uint16 getFPS();
+    string getTitle();
+    Dimension getMaximumSize();
+    Dimension getMinimumSize();
 
     void setSize(Uint16 width, Uint16 height);
     void setPosition(int x, int y);
     void setFPS(Uint16 fps);
-
-    Dimension getSize();
-    Point getPosition();
-    Uint16 getFPS();
-
     void setCentered();
     void setFullscreen(bool fscreen);
+    void setTitle(string title);
+    void setMaximized();
+    void setMinimized();
+    void setMaximumSize(int width, int height);
+    void setMinimumSize(int width, int height);
+    void setBordered(bool bordered);
+    void setAlwaysOnTop(bool onTop);
+    void setResizable(bool resizable);
 
     void addFrame(Frame *frame);
     void popFrame(Frame *frame);

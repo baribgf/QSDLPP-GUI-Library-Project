@@ -18,38 +18,6 @@ int pixelsToPoints(int pixels)
 
 void drawLineToSurface(SDL_Surface *surface, int x1, int y1, int x2, int y2, Uint32 color)
 {
-    /*
-    SDL_LockSurface(surface);
-
-    Uint8 *pixels = (Uint8 *)surface->pixels;
-
-    int dx = abs(x1 - x2);
-    int dy = abs(y1 - y2);
-    int sx = (x1 < x2) ? 1 : -1;
-    int sy = (y1 < y2) ? 1 : -1;
-    int error = dx - dy;
-
-    while (x1 != x2 || y1 != y2)
-    {
-        Uint8 *pixel = pixels + (y1 * surface->pitch) + (x1 * surface->format->BytesPerPixel);
-        *(Uint32 *)pixel = color;
-
-        int error2 = 2 * error;
-        if (error2 > -dy)
-        {
-            error -= dy;
-            x1 += sx;
-        }
-        if (error2 < dx)
-        {
-            error += dx;
-            y1 += sy;
-        }
-    }
-
-    SDL_UnlockSurface(surface);
-    */
-
     // Bresenham's line algorithm
     int dx = abs(x2 - x1);
     int dy = abs(y2 - y1);
@@ -168,5 +136,4 @@ void setCursor(Cursor cursor)
     SDL_Cursor *c = SDL_CreateSystemCursor(toSDLCursor(cursor));
     SDL_SetCursor(c);
     SDL_ShowCursor(SDL_ENABLE);
-    // SDL_FreeCursor(c);
 }

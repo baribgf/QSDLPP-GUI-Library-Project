@@ -1,5 +1,6 @@
 *.o
 *.a
+/.vscode
 /build
 /build/*
 .project
