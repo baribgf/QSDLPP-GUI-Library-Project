@@ -56,7 +56,7 @@ public:
     void scrollH(int step);
     
     void add(RUIComponent *component);
-    void del(RUIComponent *component);
+    void pop(RUIComponent *component);
 
     void invokeEvents(Event e) override;
 };

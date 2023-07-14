@@ -19,7 +19,7 @@ public:
 
     vector<RadioButton *> getMembers();
     void add(RadioButton *radioButton);
-    void del(RadioButton *radioButton);
+    void pop(RadioButton *radioButton);
 };
 
 #endif

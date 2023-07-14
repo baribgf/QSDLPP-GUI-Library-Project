@@ -23,7 +23,7 @@ private:
     vector<Frame*> frames;
 
     vector<RUIComponent *> haveFocus;
-    Uint64 maxFocusTimeID = 0;
+    Uint64 maxFocusTimeID;
 
 protected:
     Uint16 FPS, frameDelay;

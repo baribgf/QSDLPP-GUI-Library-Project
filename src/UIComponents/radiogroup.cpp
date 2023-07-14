@@ -24,7 +24,7 @@ void RadioGroup::add(RadioButton *radioButton)
     this->radioMembers.push_back(radioButton);
 }
 
-void RadioGroup::del(RadioButton *radioButton)
+void RadioGroup::pop(RadioButton *radioButton)
 {
     for (int i = 0; i < this->radioMembers.size(); i++)
     {

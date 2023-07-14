@@ -8,6 +8,7 @@ Window::Window(string title, int width, int height, Uint32 flags) : title(title)
 	this->thereWasPendingEvent = false;
 	this->focusedComponent = nullptr;
 	this->argc = 0;
+	this->maxFocusTimeID = 0;
 
 	this->x = SDL_WINDOWPOS_CENTERED;
 	this->y = SDL_WINDOWPOS_CENTERED;

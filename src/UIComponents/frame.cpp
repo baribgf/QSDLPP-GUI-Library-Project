@@ -125,7 +125,7 @@ void Frame::add(RUIComponent *component)
 	component->parviewport = this->viewport;
 }
 
-void Frame::del(RUIComponent *component)
+void Frame::pop(RUIComponent *component)
 {
 	for (int i = 0; i < this->members.size(); i++)
 	{
