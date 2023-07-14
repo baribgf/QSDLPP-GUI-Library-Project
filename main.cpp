@@ -1,7 +1,5 @@
 #include "headers/application.hpp"
 #include "headers/window.hpp"
-#include "headers/UIComponents/frame.hpp"
-#include "headers/UIComponents/canvas.hpp"
 
 int main(int argc, char const *argv[])
 {
