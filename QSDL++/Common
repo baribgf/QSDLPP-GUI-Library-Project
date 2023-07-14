@@ -81,8 +81,8 @@ enum WindowFlags
 
 typedef struct
 {
-	Uint32 w;
-	Uint32 h;
+	int w;
+	int h;
 } Dimension;
 
 typedef struct

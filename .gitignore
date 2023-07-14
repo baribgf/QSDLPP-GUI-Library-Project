@@ -7,3 +7,4 @@
 .cproject
 /test/*
 !/test/test.cpp
+!/test/CMakeLists.txt

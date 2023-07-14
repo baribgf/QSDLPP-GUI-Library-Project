@@ -118,14 +118,14 @@ Dimension Window::getMaximumSize()
 {
 	int w, h;
 	SDL_GetWindowMaximumSize(this->baseWindow, &w, &h);
-	return {(Uint32)w, (Uint32)h};
+	return {w, h};
 }
 
 Dimension Window::getMinimumSize()
 {
 	int w, h;
 	SDL_GetWindowMinimumSize(this->baseWindow, &w, &h);
-	return {(Uint32)w, (Uint32)h};
+	return {w, h};
 }
 
 void Window::setSize(Uint16 width, Uint16 height)
