@@ -296,6 +296,11 @@ void Window::popFrame(Frame *frame)
 	printf("WARNING: Cannot delete non existing frame.\n");
 }
 
+RUIComponent *Window::getFocusedComponent()
+{
+	return this->focusedComponent;
+}
+
 Window::~Window()
 {
 }

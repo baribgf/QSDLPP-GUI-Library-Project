@@ -39,6 +39,8 @@ public:
 
     Window(std::string title, int width, int height, Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     virtual ~Window();
+    
+    RUIComponent *getFocusedComponent();
 
     void setSize(Uint16 width, Uint16 height);
     void setPosition(int x, int y);
