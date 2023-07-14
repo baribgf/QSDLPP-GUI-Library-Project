@@ -7,15 +7,15 @@ file(GLOB SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp ${CMAKE_CURRENT_SOURCE
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 
-add_library(QSDL++ SHARED ${SRC_FILES})
+add_library(QSDLPP SHARED ${SRC_FILES})
 
 find_library(SDL2 SDL2 REQUIRED)
 find_library(SDL2_ttf SDL2_ttf REQUIRED)
 find_library(SDL2_image SDL2_image REQUIRED)
-target_link_libraries(QSDL++ SDL2 SDL2_ttf SDL2_image)
+target_link_libraries(QSDLPP SDL2 SDL2_ttf SDL2_image)
 
 install(
-    TARGETS QSDL++
+    TARGETS QSDLPP
     LIBRARY DESTINATION lib
 )
 

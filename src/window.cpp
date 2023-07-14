@@ -188,6 +188,9 @@ void Window::renderComponent(UIComponent *uicomponent)
 
 void Window::renderFrame(Frame *frame)
 {
+	if (!frame->isVisible())
+		return;
+		
 	frame->fill(frame->getFillColor());
 
 	// render all frame content
@@ -244,7 +247,7 @@ void Window::renderFrame(Frame *frame)
 			childComp->invokeEvents(Event::toEvent(this->event));
 		}
 	}
-
+	
 	// for focusing purposes ..
 	if (frame->hasFocus() && frame != this->focusedComponent)
 	{
