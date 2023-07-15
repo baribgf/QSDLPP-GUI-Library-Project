@@ -32,6 +32,7 @@ protected:
     string title;
     int x, y, width, height;
     Uint32 flags;
+    bool maximized, minimized, bordered, alwaysOnTop, resizable;
 
 public:
     // int argc;
