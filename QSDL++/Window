@@ -59,7 +59,7 @@ public:
     void setCentered();
     void setFullscreen(bool fscreen);
     void setTitle(string title);
-    void setMaximized();
+    void setMaximized(bool maximized);
     void setMinimized();
     void setMaximumSize(int width, int height);
     void setMinimumSize(int width, int height);

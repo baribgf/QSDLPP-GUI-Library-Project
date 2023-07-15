@@ -54,7 +54,7 @@ void Window::mainloop()
 
 	// do here ..
 
-	for (Frame *frame : this->frames)
+	for (Frame* frame : this->frames)
 	{
 		this->renderFrame(frame);
 		frame->update(); // update the frame before blitting into it.
@@ -67,8 +67,8 @@ void Window::mainloop()
 void Window::show()
 {
 	this->baseWindow = SDL_CreateWindow(this->title.c_str(), x, y, width,
-										height,
-										this->flags);
+		height,
+		this->flags);
 	ENSURE_NOT(this->baseWindow, NULL);
 
 	this->mainRenderer = SDL_CreateRenderer(this->baseWindow, -1, 0);
@@ -93,12 +93,12 @@ void Window::show()
 
 Point Window::getPosition()
 {
-	return {this->x, this->y};
+	return { this->x, this->y };
 }
 
 Dimension Window::getSize()
 {
-	return {this->width, this->height};
+	return { this->width, this->height };
 }
 
 Uint16 Window::getFPS()
@@ -115,21 +115,21 @@ Dimension Window::getMaximumSize()
 {
 	int w, h;
 	SDL_GetWindowMaximumSize(this->baseWindow, &w, &h);
-	return {w, h};
+	return { w, h };
 }
 
 Dimension Window::getMinimumSize()
 {
 	int w, h;
 	SDL_GetWindowMinimumSize(this->baseWindow, &w, &h);
-	return {w, h};
+	return { w, h };
 }
 
 bool Window::isMaximized()
 {
 	if (this->baseWindow)
 		return (SDL_bool)(SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_MAXIMIZED) == SDL_bool::SDL_TRUE ? true : false;
-	
+
 	cout << "WARNING: Window is not initialized yet !" << endl;
 	return false;
 }
@@ -138,7 +138,7 @@ bool Window::isMinimized()
 {
 	if (this->baseWindow)
 		return (SDL_bool)(SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_MINIMIZED) == SDL_bool::SDL_TRUE ? true : false;
-	
+
 	cout << "WARNING: Window is not initialized yet !" << endl;
 	return false;
 }
@@ -147,7 +147,7 @@ bool Window::isBordered()
 {
 	if (this->baseWindow)
 		return (SDL_bool)(SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_BORDERLESS) == SDL_bool::SDL_FALSE ? true : false;
-	
+
 	cout << "WARNING: Window is not initialized yet !" << endl;
 	return false;
 }
@@ -156,7 +156,7 @@ bool Window::isAlwaysOnTop()
 {
 	if (this->baseWindow)
 		return (SDL_bool)(SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_ALWAYS_ON_TOP) == SDL_bool::SDL_TRUE ? true : false;
-	
+
 	cout << "WARNING: Window is not initialized yet !" << endl;
 	return false;
 }
@@ -165,7 +165,7 @@ bool Window::isResizable()
 {
 	if (this->baseWindow)
 		return (SDL_bool)(SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_RESIZABLE) == SDL_bool::SDL_TRUE ? true : false;
-	
+
 	cout << "WARNING: Window is not initialized yet !" << endl;
 	return false;
 }
@@ -220,14 +220,19 @@ void Window::setTitle(string title)
 {
 	if (this->baseWindow)
 		SDL_SetWindowTitle(this->baseWindow, title.c_str());
-	
+
 	this->title = title;
 }
 
-void Window::setMaximized()
+void Window::setMaximized(bool maximized)
 {
 	if (this->baseWindow)
-		SDL_MaximizeWindow(this->baseWindow);
+	{
+		if (maximized)
+			SDL_MaximizeWindow(this->baseWindow);
+		else
+			SDL_RestoreWindow(this->baseWindow);
+	}
 }
 
 void Window::setMinimized()
@@ -266,12 +271,12 @@ void Window::setResizable(bool resizable)
 		SDL_SetWindowResizable(this->baseWindow, resizable ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE);
 }
 
-void Window::renderComponent(UIComponent *uicomponent)
+void Window::renderComponent(UIComponent* uicomponent)
 {
 	if (!uicomponent->isVisible())
 		return;
 
-	SDL_Texture *texture = SDL_CreateTexture(this->mainRenderer, SDL_PIXELFORMAT_RGBA32, SDL_RENDERER_TARGETTEXTURE, uicomponent->getSize().w, uicomponent->getSize().h);
+	SDL_Texture* texture = SDL_CreateTexture(this->mainRenderer, SDL_PIXELFORMAT_RGBA32, SDL_RENDERER_TARGETTEXTURE, uicomponent->getSize().w, uicomponent->getSize().h);
 	ENSURE_NOT(texture, NULL);
 
 	ENSURE(SDL_UpdateTexture(texture, NULL, uicomponent->getSDLSurface()->pixels, uicomponent->getSDLSurface()->pitch), 0);
@@ -286,7 +291,7 @@ void Window::renderComponent(UIComponent *uicomponent)
 	int destw = srcw;
 	int desth = srch;
 
-	Frame *frameComp = dynamic_cast<Frame *>(uicomponent);
+	Frame* frameComp = dynamic_cast<Frame*>(uicomponent);
 	if (frameComp)
 	{
 		srcx += frameComp->viewport.x;
@@ -298,8 +303,8 @@ void Window::renderComponent(UIComponent *uicomponent)
 		desth = srch;
 	}
 
-	SDL_Rect rsrc = {srcx, srcy, srcw, srch};
-	SDL_Rect rdest = {destx, desty, destw, desth};
+	SDL_Rect rsrc = { srcx, srcy, srcw, srch };
+	SDL_Rect rdest = { destx, desty, destw, desth };
 
 	ENSURE(SDL_RenderCopy(this->mainRenderer, texture, &rsrc, &rdest), 0);
 	SDL_DestroyTexture(texture);
@@ -308,7 +313,7 @@ void Window::renderComponent(UIComponent *uicomponent)
 		uicomponent->invokeEvents(Event::toEvent(this->event));
 }
 
-void Window::renderFrame(Frame *frame)
+void Window::renderFrame(Frame* frame)
 {
 	if (!frame->isVisible())
 		return;
@@ -316,14 +321,14 @@ void Window::renderFrame(Frame *frame)
 	frame->fill(frame->getFillColor());
 
 	// render all frame content
-	for (RUIComponent *childComp : frame->getMembers())
+	for (RUIComponent* childComp : frame->getMembers())
 	{
 		if (!childComp->isVisible())
 			continue;
 
 		// Copy component surface into parent frame
 
-		Frame *childFrame = dynamic_cast<Frame *>(childComp);
+		Frame* childFrame = dynamic_cast<Frame*>(childComp);
 		if (childFrame)
 		{
 			this->renderFrame(childFrame);
@@ -340,19 +345,19 @@ void Window::renderFrame(Frame *frame)
 			int destw = srcw;
 			int desth = srch;
 
-			SDL_Rect rsrc = {srcx, srcy, srcw, srch};
-			SDL_Rect rdest = {destx, desty, destw, desth};
+			SDL_Rect rsrc = { srcx, srcy, srcw, srch };
+			SDL_Rect rdest = { destx, desty, destw, desth };
 
 			ENSURE(SDL_BlitSurface(childFrame->getSDLSurface(), &rsrc, frame->getSDLSurface(), &rdest), 0);
 		}
 		else
 		{
 			SDL_Rect rdest =
-				{childComp->getPosition().x, childComp->getPosition().y,
-				 childComp->getSize().w, childComp->getSize().h};
+			{ childComp->getPosition().x, childComp->getPosition().y,
+			 childComp->getSize().w, childComp->getSize().h };
 
 			SDL_Rect rsrc =
-				{0, 0, childComp->getSize().w, childComp->getSize().h};
+			{ 0, 0, childComp->getSize().w, childComp->getSize().h };
 			ENSURE(SDL_BlitSurface(childComp->getSDLSurface(), &rsrc, frame->getSDLSurface(), &rdest), 0);
 		}
 
@@ -382,7 +387,7 @@ void Window::renderFrame(Frame *frame)
 
 void Window::handleFocusing()
 {
-	for (RUIComponent *comp : haveFocus)
+	for (RUIComponent* comp : haveFocus)
 	{
 		if (comp->focusTimeID >= maxFocusTimeID)
 		{
@@ -398,12 +403,12 @@ void Window::handleFocusing()
 	this->haveFocus.clear();
 }
 
-void Window::addFrame(Frame *frame)
+void Window::addFrame(Frame* frame)
 {
 	this->frames.push_back(frame);
 }
 
-void Window::popFrame(Frame *frame)
+void Window::popFrame(Frame* frame)
 {
 	for (int i = 0; i < this->frames.size(); i++)
 	{
@@ -417,7 +422,7 @@ void Window::popFrame(Frame *frame)
 	printf("WARNING: Cannot delete non existing frame.\n");
 }
 
-RUIComponent *Window::getFocusedComponent()
+RUIComponent* Window::getFocusedComponent()
 {
 	return this->focusedComponent;
 }
