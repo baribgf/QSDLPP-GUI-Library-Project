@@ -13,19 +13,20 @@ Application::Application(int argc, char const *argv[])
 
 void Application::setWindow(Window *win)
 {
-	win->argc = this->argc;
+	// win->argc = this->argc;
 
-	for (int i = 0; i < this->argc; i++)
-	{
-		win->argv[i] = this->argv[i];
-	}
+	// for (int i = 0; i < this->argc; i++)
+	// {
+	// 	win->argv[i] = this->argv[i];
+	// }
 
 	this->window = win;
 }
 
 void Application::exec()
 {
-	this->window->exec();
+	if (this->window)
+		this->window->exec();
 }
 
 Application::~Application()

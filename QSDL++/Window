@@ -34,8 +34,8 @@ protected:
     Uint32 flags;
 
 public:
-    int argc;
-    char const *argv[];
+    // int argc;
+    // char const *argv[];
 
     Window(std::string title, int width, int height, Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     virtual ~Window();
