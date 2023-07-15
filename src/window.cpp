@@ -128,7 +128,7 @@ Dimension Window::getMinimumSize()
 bool Window::isMaximized()
 {
 	if (this->baseWindow)
-		return SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_MAXIMIZED == SDL_bool::SDL_TRUE ? true : false;
+		return (SDL_bool)(SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_MAXIMIZED) == SDL_bool::SDL_TRUE ? true : false;
 	
 	cout << "WARNING: Window is not initialized yet !" << endl;
 	return false;
@@ -137,7 +137,7 @@ bool Window::isMaximized()
 bool Window::isMinimized()
 {
 	if (this->baseWindow)
-		return SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_MINIMIZED == SDL_bool::SDL_TRUE ? true : false;
+		return (SDL_bool)(SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_MINIMIZED) == SDL_bool::SDL_TRUE ? true : false;
 	
 	cout << "WARNING: Window is not initialized yet !" << endl;
 	return false;
@@ -146,7 +146,7 @@ bool Window::isMinimized()
 bool Window::isBordered()
 {
 	if (this->baseWindow)
-		return SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_BORDERLESS == SDL_bool::SDL_FALSE ? true : false;
+		return (SDL_bool)(SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_BORDERLESS) == SDL_bool::SDL_FALSE ? true : false;
 	
 	cout << "WARNING: Window is not initialized yet !" << endl;
 	return false;
@@ -155,7 +155,7 @@ bool Window::isBordered()
 bool Window::isAlwaysOnTop()
 {
 	if (this->baseWindow)
-		return SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_ALWAYS_ON_TOP == SDL_bool::SDL_TRUE ? true : false;
+		return (SDL_bool)(SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_ALWAYS_ON_TOP) == SDL_bool::SDL_TRUE ? true : false;
 	
 	cout << "WARNING: Window is not initialized yet !" << endl;
 	return false;
@@ -164,7 +164,7 @@ bool Window::isAlwaysOnTop()
 bool Window::isResizable()
 {
 	if (this->baseWindow)
-		return SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_RESIZABLE == SDL_bool::SDL_TRUE ? true : false;
+		return (SDL_bool)(SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_RESIZABLE) == SDL_bool::SDL_TRUE ? true : false;
 	
 	cout << "WARNING: Window is not initialized yet !" << endl;
 	return false;
