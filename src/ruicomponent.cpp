@@ -51,15 +51,6 @@ bool RUIComponent::hasFocus()
     return this->focus;
 }
 
-void RUIComponent::setSize(Uint16 width, Uint16 height)
-{
-    SDL_Surface *newBaseSurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, baseSurface->format->BitsPerPixel, baseSurface->format->format);
-    ENSURE_NOT(newBaseSurface, NULL);
-    ENSURE(SDL_BlitSurface(baseSurface, NULL, newBaseSurface, NULL), 0);
-    SDL_FreeSurface(baseSurface);
-    baseSurface = newBaseSurface;
-}
-
 void RUIComponent::setPosition(int x, int y)
 {
     this->relX = x;

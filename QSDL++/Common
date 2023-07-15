@@ -21,7 +21,7 @@ using namespace std;
 #endif
 
 #define debug(x) std::cout << "DEBUG: " << x << std::endl;
-#define TRACE cout << "test: " << SDL_GetTicks() << endl;
+#define TRACE cout << "TRACE: " << SDL_GetTicks() << endl;
 #define ENSURE(x, success) if (x != success) {\
 		printf("Error: %s\n", SDL_GetError());\
 		exit(1); \

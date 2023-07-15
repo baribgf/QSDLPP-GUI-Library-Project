@@ -249,6 +249,15 @@ void Label::setBordersColor(Color color)
     this->drawBorders();
 }
 
+void Label::setSize(Uint16 width, Uint16 height)
+{
+    RUIComponent::setSize(width, height);
+
+    this->setTextSize(pixelsToPoints(height));
+    this->setTextAlign(this->textAlign);
+    this->update();
+}
+
 void Label::setFontName(string fontName)
 {
     #ifdef __linux__

@@ -48,7 +48,6 @@ public:
     UIComponent *getParent();
 
     virtual void setPosition(int x, int y);
-    void setSize(Uint16 width, Uint16 height) override;
     virtual void setFocus(bool focus);
 
     void invokeEvents(Event event) override;

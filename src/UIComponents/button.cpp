@@ -27,15 +27,11 @@ void Button::onClick(Event e)
 
 void Button::onMouseEntered(Event e)
 {
-    setCursor(Cursor::CURSOR_HAND);
-
     Label::onMouseEntered(e);
 }
 
 void Button::onMouseLeaved(Event e)
 {
-    setCursor(Cursor::CURSOR_ARROW);
-
     Label::onMouseLeaved(e);
 }
 

@@ -7,7 +7,7 @@ Window::Window(string title, int width, int height, Uint32 flags) : title(title)
 	this->running = true;
 	this->thereWasPendingEvent = false;
 	this->focusedComponent = nullptr;
-	this->argc = 0;
+	// this->argc = 0;
 	this->maxFocusTimeID = 0;
 
 	this->x = SDL_WINDOWPOS_CENTERED;
@@ -31,6 +31,7 @@ void Window::handleEvents()
 
 	else if (event.window.event == SDL_WINDOWEVENT_RESIZED)
 	{
+		SDL_GetWindowSize(this->baseWindow, &this->width, &this->height);
 		this->onWindowResized(e);
 	}
 }
@@ -92,16 +93,12 @@ void Window::exec()
 
 Point Window::getPosition()
 {
-	Point p;
-	SDL_GetWindowPosition(this->baseWindow, &p.x, &p.y);
-	return p;
+	return {this->x, this->y};
 }
 
 Dimension Window::getSize()
 {
-	int w, h;
-	SDL_GetWindowSize(this->baseWindow, &w, &h);
-	return {(Uint16)w, (Uint16)h};
+	return {this->width, this->height};
 }
 
 Uint16 Window::getFPS()
@@ -111,7 +108,7 @@ Uint16 Window::getFPS()
 
 string Window::getTitle()
 {
-	return string(SDL_GetWindowTitle(this->baseWindow));
+	return this->title;
 }
 
 Dimension Window::getMaximumSize()
@@ -130,18 +127,28 @@ Dimension Window::getMinimumSize()
 
 void Window::setSize(Uint16 width, Uint16 height)
 {
-	SDL_SetWindowSize(this->baseWindow, width, height);
+	if (this->baseWindow)
+		SDL_SetWindowSize(this->baseWindow, width, height);
+
+	this->width = width;
+	this->height = height;
 }
 
 void Window::setPosition(int x, int y)
 {
-	SDL_SetWindowPosition(this->baseWindow, x, y);
+	if (this->baseWindow)
+		SDL_SetWindowPosition(this->baseWindow, x, y);
+
+	this->x = x;
+	this->y = y;
 }
 
 void Window::setCentered()
 {
 	this->x = SDL_WINDOWPOS_CENTERED;
 	this->y = SDL_WINDOWPOS_CENTERED;
+	if (this->baseWindow)
+		SDL_SetWindowPosition(this->baseWindow, this->x, this->y);
 }
 
 void Window::setFullscreen(bool fscreen)
@@ -166,42 +173,52 @@ void Window::setFPS(Uint16 fps)
 
 void Window::setTitle(string title)
 {
-	SDL_SetWindowTitle(this->baseWindow, title.c_str());
+	if (this->baseWindow)
+		SDL_SetWindowTitle(this->baseWindow, title.c_str());
+	
+	this->title = title;
 }
 
 void Window::setMaximized()
 {
-	SDL_MaximizeWindow(this->baseWindow);
+	if (this->baseWindow)
+		SDL_MaximizeWindow(this->baseWindow);
 }
 
 void Window::setMinimized()
 {
-	SDL_MinimizeWindow(this->baseWindow);
+	if (this->baseWindow)
+		SDL_MinimizeWindow(this->baseWindow);
 }
 
 void Window::setMaximumSize(int width, int height)
 {
-	SDL_SetWindowMaximumSize(this->baseWindow, width, height);
+	if (this->baseWindow)
+		SDL_SetWindowMaximumSize(this->baseWindow, width, height);
 }
 
 void Window::setMinimumSize(int width, int height)
 {
-	SDL_SetWindowMinimumSize(this->baseWindow, width, height);
+	if (this->baseWindow)
+		SDL_SetWindowMinimumSize(this->baseWindow, width, height);
 }
 
 void Window::setBordered(bool bordered)
 {
-	SDL_SetWindowBordered(this->baseWindow, bordered ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE);
+	if (this->baseWindow)
+		SDL_SetWindowBordered(this->baseWindow, bordered ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE);
 }
 
 void Window::setAlwaysOnTop(bool onTop)
 {
-	SDL_SetWindowAlwaysOnTop(this->baseWindow, onTop ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE);
+	if (this->baseWindow)
+		SDL_SetWindowAlwaysOnTop(this->baseWindow, onTop ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE);
 }
 
 void Window::setResizable(bool resizable)
 {
-	SDL_SetWindowResizable(this->baseWindow, resizable ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE);
+	if (this->baseWindow)
+		SDL_SetWindowResizable(this->baseWindow, resizable ? SDL_bool::SDL_TRUE : SDL_bool::SDL_FALSE);
 }
 
 void Window::renderComponent(UIComponent *uicomponent)

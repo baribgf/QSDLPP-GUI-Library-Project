@@ -1,6 +1,6 @@
 #include "../../QSDL++/UIComponents/Frame"
 
-Frame::Frame(RUIComponent *parent, int width, int height) : RUIComponent(parent, width, height)
+Frame::Frame(RUIComponent* parent, int width, int height) : RUIComponent(parent, width, height)
 {
 	this->overflowX = false;
 	this->overflowY = false;
@@ -11,7 +11,7 @@ Frame::Frame(RUIComponent *parent, int width, int height) : RUIComponent(parent,
 	this->scrollBarMovingStartY = 0;
 	this->scrollBarMovingDistX = 0;
 	this->scrollBarMovingStartX = 0;
-	this->viewport = {0, 0, width, height};
+	this->viewport = { 0, 0, width, height };
 	this->DEFAULT_SCROLL_BAR_WIDTH = 15;
 }
 
@@ -35,19 +35,19 @@ bool Frame::insideBounds(int x, int y)
 	if (!this->overrideCompInsideBounds)
 	{
 		// Traverse the members tree and get all components
-		vector<RUIComponent *> nodes;
-		vector<RUIComponent *> stack = {this};
+		vector<RUIComponent*> nodes;
+		vector<RUIComponent*> stack = { this };
 
 		while (stack.size() > 0)
 		{
-			RUIComponent *node = stack.at(stack.size() - 1);
+			RUIComponent* node = stack.at(stack.size() - 1);
 			stack.pop_back();
 			nodes.push_back(node);
 
-			Frame *nodeFrame = dynamic_cast<Frame *>(node);
+			Frame* nodeFrame = dynamic_cast<Frame*>(node);
 			if (nodeFrame)
 			{
-				for (RUIComponent *c : nodeFrame->getMembers())
+				for (RUIComponent* c : nodeFrame->getMembers())
 					stack.push_back(c);
 			}
 		}
@@ -86,12 +86,19 @@ void Frame::setPosition(int x, int y)
 {
 	RUIComponent::setPosition(x, y);
 
-	for (RUIComponent *comp : this->members)
+	for (RUIComponent* comp : this->members)
 	{
 		Point compPos = comp->getPosition();
 		comp->setAbsPosition(x + compPos.x, y + compPos.y);
 		comp->setPosition(compPos.x, compPos.y);
 	}
+}
+
+void Frame::setSize(Uint16 width, Uint16 height)
+{
+	RUIComponent::setSize(width, height);
+
+	this->setViewport(0, 0, width, height);
 }
 
 void Frame::setOverflowX(bool ovf)
@@ -111,21 +118,21 @@ void Frame::setViewport(int x, int y, int w, int h)
 		printf("WARNING: invalid viewport bounds, got: x: %i, y: %i, w: %i, h: %i\n", x, y, w, h);
 	}
 
-	this->viewport = {x, y, w, h};
+	this->viewport = { x, y, w, h };
 
-	for (RUIComponent *comp : this->members)
+	for (RUIComponent* comp : this->members)
 	{
-		comp->parviewport = {x, y, w, h};
+		comp->parviewport = { x, y, w, h };
 	}
 }
 
-void Frame::add(RUIComponent *component)
+void Frame::add(RUIComponent* component)
 {
 	this->members.push_back(component);
 	component->parviewport = this->viewport;
 }
 
-void Frame::pop(RUIComponent *component)
+void Frame::pop(RUIComponent* component)
 {
 	for (int i = 0; i < this->members.size(); i++)
 	{
@@ -139,7 +146,12 @@ void Frame::pop(RUIComponent *component)
 	printf("WARNING: Cannot delete non existing component.\n");
 }
 
-vector<RUIComponent *> Frame::getMembers()
+void Frame::clear()
+{
+	this->members.clear();
+}
+
+vector<RUIComponent*> Frame::getMembers()
 {
 	return this->members;
 }
@@ -179,21 +191,21 @@ void Frame::drawVScrollBar()
 
 	// draw scroll bar container
 	drawLineToSurface(this->baseSurface,
-					  this->viewport.w + this->viewport.x - this->DEFAULT_SCROLL_BAR_WIDTH, 0,
-					  this->viewport.w + this->viewport.x - this->DEFAULT_SCROLL_BAR_WIDTH,
-					  this->viewport.h + this->viewport.y,
-					  SDL_MapRGBA(this->baseSurface->format, BLACK));
+		this->viewport.w + this->viewport.x - this->DEFAULT_SCROLL_BAR_WIDTH, 0,
+		this->viewport.w + this->viewport.x - this->DEFAULT_SCROLL_BAR_WIDTH,
+		this->viewport.h + this->viewport.y,
+		SDL_MapRGBA(this->baseSurface->format, BLACK));
 
 	float ratio = (float)this->viewport.y / height;
 	int thumbHeight = ((float)(this->viewport.h - (this->overflowX ? this->DEFAULT_SCROLL_BAR_WIDTH : 0)) / height) * viewport.h;
-	SDL_Surface *c = SDL_CreateRGBSurfaceWithFormat(0,
-													this->DEFAULT_SCROLL_BAR_WIDTH, thumbHeight,
-													this->baseSurface->format->BitsPerPixel,
-													this->baseSurface->format->format);
+	SDL_Surface* c = SDL_CreateRGBSurfaceWithFormat(0,
+		this->DEFAULT_SCROLL_BAR_WIDTH, thumbHeight,
+		this->baseSurface->format->BitsPerPixel,
+		this->baseSurface->format->format);
 	ENSURE_NOT(c, NULL);
 	ENSURE(SDL_FillRect(c, NULL, SDL_MapRGBA(this->baseSurface->format, BLACK)), 0);
 
-	SDL_Rect r = {this->viewport.w + this->viewport.x - c->w, (int)ceil((height / ((float)(this->viewport.h - (this->overflowX ? this->DEFAULT_SCROLL_BAR_WIDTH : 0))) + 1) * ratio * (this->viewport.h - (this->overflowX ? this->DEFAULT_SCROLL_BAR_WIDTH : 0))), c->w, c->h};
+	SDL_Rect r = { this->viewport.w + this->viewport.x - c->w, (int)ceil((height / ((float)(this->viewport.h - (this->overflowX ? this->DEFAULT_SCROLL_BAR_WIDTH : 0))) + 1) * ratio * (this->viewport.h - (this->overflowX ? this->DEFAULT_SCROLL_BAR_WIDTH : 0))), c->w, c->h };
 
 	ENSURE(SDL_BlitSurface(c, NULL, this->baseSurface, &r), 0);
 	SDL_FreeSurface(c);
@@ -205,24 +217,24 @@ void Frame::drawHScrollBar()
 
 	// draw scroll bar container
 	drawLineToSurface(this->baseSurface, 0,
-					  this->viewport.h + this->viewport.y - this->DEFAULT_SCROLL_BAR_WIDTH, width,
-					  this->viewport.h + this->viewport.y - this->DEFAULT_SCROLL_BAR_WIDTH,
-					  SDL_MapRGBA(this->baseSurface->format, BLACK));
+		this->viewport.h + this->viewport.y - this->DEFAULT_SCROLL_BAR_WIDTH, width,
+		this->viewport.h + this->viewport.y - this->DEFAULT_SCROLL_BAR_WIDTH,
+		SDL_MapRGBA(this->baseSurface->format, BLACK));
 
 	// draw scroll thumb
 	float ratio = (float)this->viewport.x / width;
 	int thumbWidth = ((float)(this->viewport.w - (this->overflowY ? this->DEFAULT_SCROLL_BAR_WIDTH : 0)) / width) * viewport.w;
-	SDL_Surface *c = SDL_CreateRGBSurfaceWithFormat(0, thumbWidth,
-													this->DEFAULT_SCROLL_BAR_WIDTH,
-													this->baseSurface->format->BitsPerPixel,
-													this->baseSurface->format->format);
+	SDL_Surface* c = SDL_CreateRGBSurfaceWithFormat(0, thumbWidth,
+		this->DEFAULT_SCROLL_BAR_WIDTH,
+		this->baseSurface->format->BitsPerPixel,
+		this->baseSurface->format->format);
 	ENSURE_NOT(c, NULL);
 	ENSURE(SDL_FillRect(c, NULL, SDL_MapRGBA(this->baseSurface->format, BLACK)), 0);
 
 	SDL_Rect r =
-		{(int)ceil(
-			 (width / ((float)(this->viewport.w - (this->overflowY ? this->DEFAULT_SCROLL_BAR_WIDTH : 0))) + 1) * ratio * (this->viewport.w - (this->overflowY ? this->DEFAULT_SCROLL_BAR_WIDTH : 0))),
-		 this->viewport.h + this->viewport.y - c->h, c->w, c->h};
+	{ (int)ceil(
+		 (width / ((float)(this->viewport.w - (this->overflowY ? this->DEFAULT_SCROLL_BAR_WIDTH : 0))) + 1) * ratio * (this->viewport.w - (this->overflowY ? this->DEFAULT_SCROLL_BAR_WIDTH : 0))),
+	 this->viewport.h + this->viewport.y - c->h, c->w, c->h };
 
 	ENSURE(SDL_BlitSurface(c, NULL, this->baseSurface, &r), 0);
 	SDL_FreeSurface(c);
@@ -231,20 +243,28 @@ void Frame::drawHScrollBar()
 void Frame::scrollV(int step)
 {
 	this->setViewport(this->viewport.x, this->viewport.y + step,
-					  this->viewport.w, this->viewport.h);
+		this->viewport.w, this->viewport.h);
 }
 
 void Frame::scrollH(int step)
 {
 	this->setViewport(this->viewport.x + step, this->viewport.y,
-					  this->viewport.w, this->viewport.h);
+		this->viewport.w, this->viewport.h);
 }
 
 void Frame::invokeEvents(Event e)
 {
-	this->overrideCompInsideBounds = this->insideVScrollBarArea(e.button.x,
-																e.button.y) ||
-									 this->insideHScrollBarArea(e.button.x, e.button.y) || this->insideVScrollBarArea(e.wheel.mouseX, e.wheel.mouseY) || this->insideHScrollBarArea(e.wheel.mouseX, e.wheel.mouseY);
+	if (this->isOverflowX())
+	{
+		this->overrideCompInsideBounds = this->insideHScrollBarArea(e.button.x, e.button.y)
+			|| this->insideHScrollBarArea(e.wheel.mouseX, e.wheel.mouseY);
+	}
+
+	if (this->isOverflowY())
+	{
+		this->overrideCompInsideBounds = this->insideVScrollBarArea(e.button.x, e.button.y)
+			|| this->insideVScrollBarArea(e.wheel.mouseX, e.wheel.mouseY);
+	}
 
 	RUIComponent::invokeEvents(e);
 
@@ -255,7 +275,7 @@ void Frame::invokeEvents(Event e)
 			return;
 
 		if (this->isOverflowY() && (!this->insideHScrollBarArea(e.wheel.mouseX, e.wheel.mouseY) || this->insideVScrollBarArea(e.wheel.mouseX,
-																															  e.wheel.mouseY)))
+			e.wheel.mouseY)))
 		{
 			if (e.wheel.y > 0) // Scrolling down
 			{
@@ -266,7 +286,7 @@ void Frame::invokeEvents(Event e)
 				else
 				{
 					this->setViewport(this->viewport.x, 0, this->viewport.w,
-									  this->viewport.h);
+						this->viewport.h);
 				}
 			}
 			else if (e.wheel.y < 0) // Scrolling up
@@ -278,8 +298,8 @@ void Frame::invokeEvents(Event e)
 				else
 				{
 					this->setViewport(this->viewport.x,
-									  this->getSize().h - this->viewport.h,
-									  this->viewport.w, this->viewport.h);
+						this->getSize().h - this->viewport.h,
+						this->viewport.w, this->viewport.h);
 				}
 			}
 		}
@@ -295,7 +315,7 @@ void Frame::invokeEvents(Event e)
 				else
 				{
 					this->setViewport(0, this->viewport.y, this->viewport.w,
-									  this->viewport.h);
+						this->viewport.h);
 				}
 			}
 			else if (e.wheel.y < 0) // Scrolling right
@@ -307,8 +327,8 @@ void Frame::invokeEvents(Event e)
 				else
 				{
 					this->setViewport(this->getSize().w - this->viewport.w,
-									  this->viewport.y, this->viewport.w,
-									  this->viewport.h);
+						this->viewport.y, this->viewport.w,
+						this->viewport.h);
 				}
 			}
 		}
