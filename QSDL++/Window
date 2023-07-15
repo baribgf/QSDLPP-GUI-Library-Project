@@ -66,9 +66,14 @@ public:
     void popFrame(Frame *frame);
 
     /**
-     * Start the window application.
+     * Create and show the window.
      */
-    void exec();
+    void show();
+
+    /**
+     * Close the window.
+    */
+    void close();
 };
 
 #endif

@@ -64,7 +64,7 @@ void Window::mainloop()
 	SDL_RenderPresent(this->mainRenderer);
 }
 
-void Window::exec()
+void Window::show()
 {
 	this->baseWindow = SDL_CreateWindow(this->title.c_str(), x, y, width,
 										height,
@@ -375,6 +375,11 @@ void Window::popFrame(Frame *frame)
 RUIComponent *Window::getFocusedComponent()
 {
 	return this->focusedComponent;
+}
+
+void Window::close()
+{
+	this->running = false;
 }
 
 Window::~Window()

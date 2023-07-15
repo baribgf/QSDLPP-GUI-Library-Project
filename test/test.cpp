@@ -10,13 +10,17 @@ int main(int argc, char const* argv[])
     Frame f(nullptr, 600, 400);
     f.setBg({ BLUE });
 
-    Button btn1(&f, "Button 1", 150, 30);
-    Button btn2(&f, "Button 2", 150, 30);
-    btn1.setPosition(100, 100);
-    btn2.setPosition(253, 100);
+    Button btn(&f, "Button 1", 150, 30);
+    btn.setPosition(100, 100);
+    btn.setOnClickHandler(
+        [](Event e, void *data)
+        {
+            Event event;
+            event.type = EventType::QUIT;
+            event.push();
+        }, nullptr);
 
-    f.add(&btn1);
-    f.add(&btn2);
+    f.add(&btn);
 
     win.addFrame(&f);
     app.setWindow(&win);

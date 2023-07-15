@@ -26,7 +26,7 @@ void Application::setWindow(Window *win)
 void Application::exec()
 {
 	if (this->window)
-		this->window->exec();
+		this->window->show();
 }
 
 Application::~Application()
