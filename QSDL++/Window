@@ -47,6 +47,11 @@ public:
     string getTitle();
     Dimension getMaximumSize();
     Dimension getMinimumSize();
+    bool isMaximized();
+    bool isMinimized();
+    bool isBordered();
+    bool isAlwaysOnTop();
+    bool isResizable();
 
     void setSize(Uint16 width, Uint16 height);
     void setPosition(int x, int y);

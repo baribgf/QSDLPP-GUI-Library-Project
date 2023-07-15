@@ -125,6 +125,51 @@ Dimension Window::getMinimumSize()
 	return {w, h};
 }
 
+bool Window::isMaximized()
+{
+	if (this->baseWindow)
+		return SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_MAXIMIZED == SDL_bool::SDL_TRUE ? true : false;
+	
+	cout << "WARNING: Window is not initialized yet !" << endl;
+	return false;
+}
+
+bool Window::isMinimized()
+{
+	if (this->baseWindow)
+		return SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_MINIMIZED == SDL_bool::SDL_TRUE ? true : false;
+	
+	cout << "WARNING: Window is not initialized yet !" << endl;
+	return false;
+}
+
+bool Window::isBordered()
+{
+	if (this->baseWindow)
+		return SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_BORDERLESS == SDL_bool::SDL_FALSE ? true : false;
+	
+	cout << "WARNING: Window is not initialized yet !" << endl;
+	return false;
+}
+
+bool Window::isAlwaysOnTop()
+{
+	if (this->baseWindow)
+		return SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_ALWAYS_ON_TOP == SDL_bool::SDL_TRUE ? true : false;
+	
+	cout << "WARNING: Window is not initialized yet !" << endl;
+	return false;
+}
+
+bool Window::isResizable()
+{
+	if (this->baseWindow)
+		return SDL_GetWindowFlags(this->baseWindow) & SDL_WINDOW_RESIZABLE == SDL_bool::SDL_TRUE ? true : false;
+	
+	cout << "WARNING: Window is not initialized yet !" << endl;
+	return false;
+}
+
 void Window::setSize(Uint16 width, Uint16 height)
 {
 	if (this->baseWindow)
