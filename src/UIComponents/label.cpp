@@ -11,7 +11,10 @@ Label::Label(RUIComponent *parent, string text, int width, int height) : RUIComp
     this->autoImgSize = true;
     this->imgPath = "";
     this->textAlign = Align::NORTH_WEST;
-    this->bordersVisible = false;
+    this->topBorderVisible = false;
+    this->bottomBorderVisible = false;
+    this->leftBorderVisible = false;
+    this->rightBorderVisible = false;
 
     #ifdef __linux__
     this->FONT_PATH = exec("fc-match --format=%{file} monospace");
@@ -186,35 +189,36 @@ void Label::drawText()
 
 void Label::drawBorders()
 {
-    if (this->bordersVisible)
-    {
-        // drawing borders
-        Uint32 color = SDL_MapRGBA(this->baseSurface->format, this->bordersColor.r, this->bordersColor.g, this->bordersColor.b, this->bordersColor.a);
+    // drawing borders
+    Uint32 color = SDL_MapRGBA(this->baseSurface->format, this->bordersColor.r, this->bordersColor.g, this->bordersColor.b, this->bordersColor.a);
 
+    if (this->topBorderVisible)
         drawLineToSurface( // top line
             this->baseSurface,
             0, 0,
             this->getSize().w, 0,
             color);
 
+    if (this->bottomBorderVisible)
         drawLineToSurface( // bottom line
             this->baseSurface,
             0, this->getSize().h - 1,
             this->getSize().w, this->getSize().h - 1,
             color);
 
+    if (this->leftBorderVisible)
         drawLineToSurface( // left line
             this->baseSurface,
             0, 0,
             0, this->getSize().h,
             color);
 
+    if (this->rightBorderVisible)
         drawLineToSurface( // right line
             this->baseSurface,
             this->getSize().w - 1, 0,
             this->getSize().w - 1, this->getSize().h - 1,
             color);
-    }
 }
 
 void Label::setFg(Color fg)
@@ -237,9 +241,36 @@ void Label::setTextSize(Uint8 p)
     this->setTextAlign(this->textAlign);
 }
 
+void Label::setTopBorderVisible(bool visible)
+{
+    this->topBorderVisible = visible;
+    this->update();
+}
+
+void Label::setBottomBorderVisible(bool visible)
+{
+    this->bottomBorderVisible = visible;
+    this->update();
+}
+
+void Label::setLeftBorderVisible(bool visible)
+{
+    this->leftBorderVisible = visible;
+    this->update();
+}
+
+void Label::setRightBorderVisible(bool visible)
+{
+    this->rightBorderVisible = visible;
+    this->update();
+}
+
 void Label::setBordersVisible(bool visible)
 {
-    this->bordersVisible = visible;
+    this->topBorderVisible = visible;
+    this->bottomBorderVisible = visible;
+    this->leftBorderVisible = visible;
+    this->rightBorderVisible = visible;
     this->update();
 }
 

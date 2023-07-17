@@ -126,8 +126,4 @@ void RUIComponent::onClick(Event e)
     UIComponent::onClick(e);
 
     this->setFocus(true);
-
-    Event ev;
-    ev.type = EventType::FOCUS_CHANGED;
-    ev.push();
 }

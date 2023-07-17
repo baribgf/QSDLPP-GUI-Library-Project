@@ -4,14 +4,14 @@
 #pragma once
 
 #ifndef QSDLPP_RUICOMPONENT
-    #include "../RUIComponent"
+#include "../RUIComponent"
 #endif
 
 class Label : public RUIComponent
 {
 protected:
-    bool autoImgSize;
-    bool bordersVisible;
+    bool autoImgSize, topBorderVisible, bottomBorderVisible,
+        leftBorderVisible, rightBorderVisible;
     Uint8 textSize;
     int textX, textY;
     int imgX, imgY;
@@ -35,7 +35,7 @@ protected:
     void alignImage();
 
 public:
-    Label(RUIComponent *parent, string text, int width, int height);
+    Label(RUIComponent* parent, string text, int width, int height);
 
     string getText();
     Color getFg();
@@ -65,6 +65,10 @@ public:
      * @param a align type: 'CENTER', 'NORTH', 'SOUTH_EAST', .. etc.
      */
     virtual void setTextAlign(Align a);
+    void setTopBorderVisible(bool visible);
+    void setBottomBorderVisible(bool visible);
+    void setLeftBorderVisible(bool visible);
+    void setRightBorderVisible(bool visible);
     void setBordersVisible(bool visible);
     void setBordersColor(Color color);
     void setImage(string imgPath, Align align = Align::NORTH_WEST);

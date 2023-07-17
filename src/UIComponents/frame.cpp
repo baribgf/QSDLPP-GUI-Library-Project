@@ -259,11 +259,14 @@ void Frame::invokeEvents(Event e)
 		this->overrideCompInsideBounds = this->insideHScrollBarArea(e.button.x, e.button.y)
 			|| this->insideHScrollBarArea(e.wheel.mouseX, e.wheel.mouseY);
 	}
-
-	if (this->isOverflowY())
+	else if (this->isOverflowY())
 	{
 		this->overrideCompInsideBounds = this->insideVScrollBarArea(e.button.x, e.button.y)
 			|| this->insideVScrollBarArea(e.wheel.mouseX, e.wheel.mouseY);
+	}
+	else
+	{
+		this->overrideCompInsideBounds = false;
 	}
 
 	RUIComponent::invokeEvents(e);

@@ -10,17 +10,12 @@ int main(int argc, char const* argv[])
     Frame f(nullptr, 600, 400);
     f.setBg({ BLUE });
 
-    Button btn(&f, "Button 1", 150, 30);
-    btn.setPosition(100, 100);
-    btn.setOnClickHandler(
-        [](Event e, void *data)
-        {
-            Event event;
-            event.type = EventType::QUIT;
-            event.push();
-        }, nullptr);
+    Label lbl(&f, "Hello, World!", 180, 30);
+    lbl.setTextAlign(Align::CENTER);
+    lbl.setPosition(100, 100);
+    lbl.setRightBorderVisible(true);
 
-    f.add(&btn);
+    f.add(&lbl);
 
     win.addFrame(&f);
     app.setWindow(&win);

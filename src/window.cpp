@@ -82,6 +82,8 @@ void Window::show()
 
 	ENSURE(SDL_SetRenderDrawBlendMode(this->mainRenderer, SDL_BLENDMODE_BLEND), 0);
 
+	SDL_GetWindowPosition(this->baseWindow, &this->x, &this->y);
+
 	while (this->running)
 	{
 		int frameStart = SDL_GetTicks();
