@@ -252,6 +252,11 @@ void Frame::scrollH(int step)
 		this->viewport.w, this->viewport.h);
 }
 
+void Frame::allowEventPropagation(bool allow)
+{
+	this->overrideCompInsideBounds = allow;
+}
+
 void Frame::invokeEvents(Event e)
 {
 	if (this->isOverflowX())

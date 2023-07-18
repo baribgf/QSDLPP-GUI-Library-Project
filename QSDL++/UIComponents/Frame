@@ -55,10 +55,10 @@ public:
     void update();
     void scrollV(int step);
     void scrollH(int step);
-    
     void add(RUIComponent *component);
     void pop(RUIComponent *component);
     void clear();
+    void allowEventPropagation(bool allow);
 
     void invokeEvents(Event e) override;
 };
