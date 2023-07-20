@@ -4,7 +4,7 @@
 #pragma once
 
 #ifndef QSDLPP_EVENT
-    #include "Event"
+#include "Event"
 #endif
 
 class UIComponent
@@ -13,17 +13,10 @@ protected:
     int x, y;
     SDL_Surface *baseSurface;
     Color fillColor;
-    bool mouseEntered;
-    bool mousePressed;
-    bool mouseReleased;
     bool visible;
-
-    void *clickHandlerData;
-    void *pressHandlerData;
-    void *releaseHandlerData;
-    void *enterHandlerData;
-    void *leaveHandlerData;
-    void *motionHandlerData;
+    bool mouseEntered, mousePressed, mouseReleased;
+    void *clickHandlerData, *pressHandlerData, *releaseHandlerData,
+        *enterHandlerData, *leaveHandlerData, *motionHandlerData;
 
     virtual void onClick(Event e);
     virtual void onMousePressed(Event e);
@@ -32,12 +25,12 @@ protected:
     virtual void onMouseLeaved(Event e);
     virtual void onMouseMotion(Event e);
 
-    void (*onClickHandlerPtr)(Event, void*);
-    void (*onMousePressedHandlerPtr)(Event, void*);
-    void (*onMouseReleasedHandlerPtr)(Event, void*);
-    void (*onMouseEnteredHandlerPtr)(Event, void*);
-    void (*onMouseLeavedHandlerPtr)(Event, void*);
-    void (*onMouseMotionHandlerPtr)(Event, void*);
+    void (*onClickHandlerPtr)(Event, void *);
+    void (*onMousePressedHandlerPtr)(Event, void *);
+    void (*onMouseReleasedHandlerPtr)(Event, void *);
+    void (*onMouseEnteredHandlerPtr)(Event, void *);
+    void (*onMouseLeavedHandlerPtr)(Event, void *);
+    void (*onMouseMotionHandlerPtr)(Event, void *);
 
     virtual bool insideBounds(int x, int y);
 
@@ -47,7 +40,6 @@ public:
     bool isVisible();
     Dimension getSize();
     virtual Point getAbsPosition();
-    
     Color getFillColor();
     virtual SDL_Surface *getSDLSurface();
 
@@ -67,12 +59,12 @@ public:
      */
     virtual void invokeEvents(Event event);
 
-    void setOnClickHandler(void (*handler)(Event e, void*), void *data);
-    void setOnMousePressedHandler(void (*handler)(Event e, void*), void *data);
-    void setOnMouseReleasedHandler(void (*handler)(Event e, void*), void *data);
-    void setOnMouseEnteredHandler(void (*handler)(Event e, void*), void *data);
-    void setOnMouseLeavedHandler(void (*handler)(Event e, void*), void *data);
-    void setOnMouseMotionHandler(void (*handler)(Event e, void*), void *data);
+    void setOnClickHandler(void (*handler)(Event e, void *), void *data);
+    void setOnMousePressedHandler(void (*handler)(Event e, void *), void *data);
+    void setOnMouseReleasedHandler(void (*handler)(Event e, void *), void *data);
+    void setOnMouseEnteredHandler(void (*handler)(Event e, void *), void *data);
+    void setOnMouseLeavedHandler(void (*handler)(Event e, void *), void *data);
+    void setOnMouseMotionHandler(void (*handler)(Event e, void *), void *data);
 
     virtual ~UIComponent();
 };

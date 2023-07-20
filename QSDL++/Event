@@ -20,7 +20,7 @@ public:
     EventWheel wheel;
 
     static Event toEvent(SDL_Event e);
-    static SDL_Event toSDLEvent(Event event);
+    SDL_Event toSDLEvent();
 
     void push();
 };

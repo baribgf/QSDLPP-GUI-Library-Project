@@ -7,12 +7,18 @@ Frame::Frame(RUIComponent* parent, int width, int height) : RUIComponent(parent,
 	this->movingScrollBarV = false;
 	this->movingScrollBarH = false;
 	this->overrideCompInsideBounds = false;
+	this->topBorderVisible = false;
+	this->bottomBorderVisible = false;
+	this->leftBorderVisible = false;
+	this->rightBorderVisible = false;
 	this->scrollBarMovingDistY = 0;
 	this->scrollBarMovingStartY = 0;
 	this->scrollBarMovingDistX = 0;
 	this->scrollBarMovingStartX = 0;
+	this->pf = this->baseSurface->format;
 	this->viewport = { 0, 0, width, height };
 	this->DEFAULT_SCROLL_BAR_WIDTH = 15;
+	this->setBordersColor({BLACK});
 }
 
 Color Frame::getBg()
@@ -89,8 +95,18 @@ void Frame::setPosition(int x, int y)
 	for (RUIComponent* comp : this->members)
 	{
 		Point compPos = comp->getPosition();
+		comp->setAbsPosition(x + compPos.x, y + compPos.y); // comp->setPosition(compPos.x, compPos.y);
+	}
+}
+
+void Frame::setAbsPosition(int x, int y)
+{
+	RUIComponent::setAbsPosition(x, y);
+
+	for (RUIComponent* comp : this->members)
+	{
+		Point compPos = comp->getPosition();
 		comp->setAbsPosition(x + compPos.x, y + compPos.y);
-		comp->setPosition(compPos.x, compPos.y);
 	}
 }
 
@@ -183,6 +199,42 @@ void Frame::update()
 
 	if (this->isOverflowX())
 		this->drawHScrollBar();
+
+	this->drawBorders();
+}
+
+void Frame::drawBorders()
+{
+	// drawing borders
+	Uint32 color = SDL_MapRGBA(this->pf, this->bordersColor.r, this->bordersColor.g, this->bordersColor.b, this->bordersColor.a);
+	
+    if (this->topBorderVisible)
+        drawLineToSurface( // top line
+            this->baseSurface,
+            0, 0,
+            this->getSize().w, 0,
+            color);
+
+    if (this->bottomBorderVisible)
+        drawLineToSurface( // bottom line
+            this->baseSurface,
+            0, this->getSize().h - 1,
+            this->getSize().w, this->getSize().h - 1,
+            color);
+
+    if (this->leftBorderVisible)
+        drawLineToSurface( // left line
+            this->baseSurface,
+            0, 0,
+            0, this->getSize().h,
+            color);
+
+    if (this->rightBorderVisible)
+        drawLineToSurface( // right line
+            this->baseSurface,
+            this->getSize().w - 1, 0,
+            this->getSize().w - 1, this->getSize().h - 1,
+            color);
 }
 
 void Frame::drawVScrollBar()
@@ -341,6 +393,26 @@ void Frame::invokeEvents(Event e)
 			}
 		}
 	}
+}
+
+void Frame::setBordersVisible(bool top, bool right, bool bottom, bool left)
+{
+	this->topBorderVisible = top;
+    this->bottomBorderVisible = bottom;
+    this->rightBorderVisible = right;
+    this->leftBorderVisible = left;
+    this->update();
+}
+
+void Frame::setBordersVisible(bool visible)
+{
+	this->setBordersVisible(visible, visible, visible, visible);
+}
+
+void Frame::setBordersColor(Color color)
+{
+	this->bordersColor = color;
+    this->update();
 }
 
 Frame::~Frame()

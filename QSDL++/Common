@@ -10,6 +10,10 @@ using namespace std;
 #include <array>
 #endif
 
+#ifndef _GLIBCXX_QUEUE
+#include <queue>
+#endif
+
 #ifndef SDL_h_
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -21,7 +25,7 @@ using namespace std;
 #endif
 
 #define debug(x) std::cout << "DEBUG: " << x << std::endl;
-#define TRACE cout << "TRACE: " << SDL_GetTicks() << endl;
+#define TRACE cout << "TRACE: " << getTicks() << endl;
 #define ENSURE(x, success) if (x != success) {\
 		printf("Error: %s\n", SDL_GetError());\
 		exit(1); \

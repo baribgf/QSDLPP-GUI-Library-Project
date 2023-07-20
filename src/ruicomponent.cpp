@@ -126,4 +126,8 @@ void RUIComponent::onClick(Event e)
     UIComponent::onClick(e);
 
     this->setFocus(true);
+
+    Event event;
+    event.type = EventType::USER_EVENT;
+    event.push();
 }

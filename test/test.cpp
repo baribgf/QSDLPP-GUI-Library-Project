@@ -3,19 +3,13 @@
 #include "../QSDL++/UIComponents/Frame"
 #include "../QSDL++/UIComponents/Button"
 
-int main(int argc, char const* argv[])
+int main(int argc, char const *argv[])
 {
     Application app(argc, argv);
     Window win("Example", 600, 400);
-    Frame f(nullptr, 600, 400);
-    f.setBg({ BLUE });
-
-    Label lbl(&f, "Hello, World!", 180, 30);
-    lbl.setTextAlign(Align::CENTER);
-    lbl.setPosition(100, 100);
-    lbl.setRightBorderVisible(true);
-
-    f.add(&lbl);
+    Frame f(nullptr, 560, 360);
+    f.setBordersVisible(true);
+    f.setPosition(20, 20);
 
     win.addFrame(&f);
     app.setWindow(&win);

@@ -29,8 +29,8 @@ protected:
     Color DEFAULT_BORDERS_COLOR;
 
     virtual void update();
-    void drawBorders();
     virtual void drawText();
+    void drawBorders();
     void drawImage();
     void alignImage();
 
@@ -65,10 +65,7 @@ public:
      * @param a align type: 'CENTER', 'NORTH', 'SOUTH_EAST', .. etc.
      */
     virtual void setTextAlign(Align a);
-    void setTopBorderVisible(bool visible);
-    void setBottomBorderVisible(bool visible);
-    void setLeftBorderVisible(bool visible);
-    void setRightBorderVisible(bool visible);
+    void setBordersVisible(bool top, bool right, bool bottom, bool left);
     void setBordersVisible(bool visible);
     void setBordersColor(Color color);
     void setImage(string imgPath, Align align = Align::NORTH_WEST);

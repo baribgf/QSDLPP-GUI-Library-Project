@@ -4,18 +4,16 @@
 #pragma once
 
 #ifndef QSDLPP_FRAME
-    #include "UIComponents/Frame"
+#include "UIComponents/Frame"
 #endif
 
 class Window
 {
 private:
-    bool running;
-    bool thereWasPendingEvent;
+    bool running, thereWasPendingEvent;
     SDL_Window *baseWindow;
     SDL_Renderer *mainRenderer;
     SDL_Event event;
-    vector<Frame*> frames;
     vector<RUIComponent *> haveFocus;
     Uint64 maxFocusTimeID;
 
@@ -28,11 +26,16 @@ private:
 protected:
     Uint16 FPS, frameDelay;
     RUIComponent *focusedComponent;
-    virtual void onWindowResized(Event e);
     string title;
     int x, y, width, height;
     Uint32 flags;
+    vector<Frame *> frames;
+    queue<Frame *> framesQueue;
     bool maximized, minimized, bordered, alwaysOnTop, resizable;
+
+    virtual void onWindowResized(Event e);
+    virtual void onMousePressed(Event e);
+    virtual void onMouseReleased(Event e);
 
 public:
     // int argc;
@@ -40,7 +43,7 @@ public:
 
     Window(std::string title, int width, int height, Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     virtual ~Window();
-    
+
     RUIComponent *getFocusedComponent();
     Dimension getSize();
     Point getPosition();
@@ -48,6 +51,7 @@ public:
     string getTitle();
     Dimension getMaximumSize();
     Dimension getMinimumSize();
+    vector<Frame *> getFrames();
     bool isMaximized();
     bool isMinimized();
     bool isBordered();
@@ -78,7 +82,7 @@ public:
 
     /**
      * Close the window.
-    */
+     */
     void close();
 };
 

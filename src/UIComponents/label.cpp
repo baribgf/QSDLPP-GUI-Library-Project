@@ -241,37 +241,18 @@ void Label::setTextSize(Uint8 p)
     this->setTextAlign(this->textAlign);
 }
 
-void Label::setTopBorderVisible(bool visible)
+void Label::setBordersVisible(bool top, bool right, bool bottom, bool left)
 {
-    this->topBorderVisible = visible;
-    this->update();
-}
-
-void Label::setBottomBorderVisible(bool visible)
-{
-    this->bottomBorderVisible = visible;
-    this->update();
-}
-
-void Label::setLeftBorderVisible(bool visible)
-{
-    this->leftBorderVisible = visible;
-    this->update();
-}
-
-void Label::setRightBorderVisible(bool visible)
-{
-    this->rightBorderVisible = visible;
+    this->topBorderVisible = top;
+    this->bottomBorderVisible = bottom;
+    this->rightBorderVisible = right;
+    this->leftBorderVisible = left;
     this->update();
 }
 
 void Label::setBordersVisible(bool visible)
 {
-    this->topBorderVisible = visible;
-    this->bottomBorderVisible = visible;
-    this->leftBorderVisible = visible;
-    this->rightBorderVisible = visible;
-    this->update();
+    this->setBordersVisible(visible, visible, visible, visible);
 }
 
 void Label::setBordersColor(Color color)

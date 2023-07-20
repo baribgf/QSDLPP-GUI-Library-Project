@@ -34,11 +34,18 @@ void Window::handleEvents()
 	{
 		this->running = false;
 	}
-
 	else if (event.window.event == SDL_WINDOWEVENT_RESIZED)
 	{
-		SDL_GetWindowSize(this->baseWindow, &this->width, &this->height);
+		SDL_GetWindowSize(this->baseWindow, &this->width, &this->height); // update window size
 		this->onWindowResized(e);
+	}
+	else if (event.type == SDL_MOUSEBUTTONDOWN)
+	{
+		this->onMousePressed(e);
+	}
+	else if (event.type == SDL_MOUSEBUTTONUP)
+	{
+		this->onMouseReleased(e);
 	}
 }
 
@@ -59,6 +66,11 @@ void Window::mainloop()
 	ENSURE(SDL_RenderClear(this->mainRenderer), 0);
 
 	// do here ..
+	for (int i = 0; i < this->framesQueue.size(); i++)
+	{
+		this->frames.push_back(this->framesQueue.front());
+		this->framesQueue.pop();
+	}
 
 	for (Frame* frame : this->frames)
 	{
@@ -87,9 +99,7 @@ void Window::show()
 	while (this->running)
 	{
 		int frameStart = SDL_GetTicks();
-
 		this->mainloop();
-
 		int frameTime = SDL_GetTicks() - frameStart;
 		if (frameTime < frameDelay)
 			SDL_Delay(frameDelay - frameTime);
@@ -131,6 +141,11 @@ Dimension Window::getMinimumSize()
 	int w, h;
 	SDL_GetWindowMinimumSize(this->baseWindow, &w, &h);
 	return { w, h };
+}
+
+vector<Frame*> Window::getFrames()
+{
+	return this->frames;
 }
 
 bool Window::isMaximized()
@@ -374,7 +389,7 @@ void Window::renderFrame(Frame* frame)
 	}
 
 	// for focusing purposes ..
-	if (frame->hasFocus() && frame != this->focusedComponent)
+	if (frame->hasFocus() && (RUIComponent *)frame != this->focusedComponent)
 	{
 		if (frame->focusTimeID > maxFocusTimeID)
 			maxFocusTimeID = frame->focusTimeID;
@@ -385,7 +400,7 @@ void Window::renderFrame(Frame* frame)
 
 void Window::handleFocusing()
 {
-	for (RUIComponent* comp : haveFocus)
+	for (RUIComponent* comp : this->haveFocus)
 	{
 		if (comp->focusTimeID >= maxFocusTimeID)
 		{
@@ -394,7 +409,10 @@ void Window::handleFocusing()
 
 			comp->setFocus(true);
 			this->focusedComponent = comp;
-			break;
+		}
+		else
+		{
+			comp->setFocus(false);
 		}
 	}
 
@@ -403,7 +421,8 @@ void Window::handleFocusing()
 
 void Window::addFrame(Frame* frame)
 {
-	this->frames.push_back(frame);
+	// this->frames.push_back(frame);
+	this->framesQueue.push(frame);
 }
 
 void Window::popFrame(Frame* frame)
@@ -437,5 +456,13 @@ Window::~Window()
 // Event handlers
 
 void Window::onWindowResized(Event e)
+{
+}
+
+void Window::onMousePressed(Event e)
+{
+}
+
+void Window::onMouseReleased(Event e)
 {
 }
