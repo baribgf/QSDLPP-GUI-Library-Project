@@ -10,7 +10,7 @@
 class UIComponent
 {
 protected:
-    int x, y;
+    int x, y, absX, absY;
     SDL_Surface *baseSurface;
     Color fillColor;
     bool visible;
@@ -39,13 +39,15 @@ public:
 
     bool isVisible();
     Dimension getSize();
-    virtual Point getAbsPosition();
+    virtual Point getPosition();
+    Point getAbsPosition();
     Color getFillColor();
     virtual SDL_Surface *getSDLSurface();
 
     virtual void setSize(Uint16 width, Uint16 height);
     void setVisible(bool visible);
-    virtual void setAbsPosition(int x, int y);
+    virtual void setPosition(int x, int y);
+    void setAbsPosition(int x, int y);
 
     /**
      * Fill the entire surface.

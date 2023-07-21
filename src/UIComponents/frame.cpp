@@ -94,19 +94,8 @@ void Frame::setPosition(int x, int y)
 
 	for (RUIComponent* comp : this->members)
 	{
-		Point compPos = comp->getPosition();
-		comp->setAbsPosition(x + compPos.x, y + compPos.y); // comp->setPosition(compPos.x, compPos.y);
-	}
-}
-
-void Frame::setAbsPosition(int x, int y)
-{
-	RUIComponent::setAbsPosition(x, y);
-
-	for (RUIComponent* comp : this->members)
-	{
-		Point compPos = comp->getPosition();
-		comp->setAbsPosition(x + compPos.x, y + compPos.y);
+		Point compPos = comp->getAbsPosition();
+		comp->setPosition(x + compPos.x, y + compPos.y); // comp->setPosition(compPos.x, compPos.y);
 	}
 }
 

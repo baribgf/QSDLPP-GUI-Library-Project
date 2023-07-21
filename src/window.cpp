@@ -366,7 +366,7 @@ void Window::renderFrame(Frame* frame)
 		else
 		{
 			SDL_Rect rdest =
-			{ childComp->getPosition().x, childComp->getPosition().y,
+			{ childComp->getAbsPosition().x, childComp->getAbsPosition().y,
 			 childComp->getSize().w, childComp->getSize().h };
 
 			SDL_Rect rsrc =

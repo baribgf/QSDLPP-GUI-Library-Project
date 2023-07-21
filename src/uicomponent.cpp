@@ -18,7 +18,7 @@ UIComponent::UIComponent(Uint16 width, Uint16 height)
     this->baseSurface = SDL_CreateRGBSurfaceWithFormat(0, width, height, 32, SDL_PIXELFORMAT_RGBA32);
     ENSURE_NOT(this->baseSurface, NULL);
 
-    this->setAbsPosition(0, 0);
+    this->setPosition(0, 0);
     this->fill(fillColor);
 }
 
@@ -42,9 +42,14 @@ Dimension UIComponent::getSize()
     return {(Uint16)this->baseSurface->w, (Uint16)this->baseSurface->h};
 }
 
-Point UIComponent::getAbsPosition()
+Point UIComponent::getPosition()
 {
     return {this->x, this->y};
+}
+
+Point UIComponent::getAbsPosition()
+{
+    return {this->absX, this->absY};
 }
 
 void UIComponent::setSize(Uint16 width, Uint16 height)
@@ -61,10 +66,18 @@ void UIComponent::setVisible(bool visible)
     this->visible = visible;
 }
 
-void UIComponent::setAbsPosition(int x, int y)
+void UIComponent::setPosition(int x, int y)
 {
     this->x = x;
     this->y = y;
+
+    this->setAbsPosition(x, y);
+}
+
+void UIComponent::setAbsPosition(int x, int y)
+{
+    this->absX = x;
+    this->absY = y;
 }
 
 void UIComponent::fill(Color color)

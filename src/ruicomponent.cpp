@@ -10,11 +10,6 @@ RUIComponent::RUIComponent(UIComponent *parent, Uint16 width, Uint16 height) : U
     this->setPosition(0, 0);
 }
 
-Point RUIComponent::getPosition()
-{
-    return {this->relX, this->relY};
-}
-
 UIComponent *RUIComponent::getParent()
 {
     return this->parent;
@@ -49,21 +44,6 @@ bool RUIComponent::insideBounds(int x, int y)
 bool RUIComponent::hasFocus()
 {
     return this->focus;
-}
-
-void RUIComponent::setPosition(int x, int y)
-{
-    this->relX = x;
-    this->relY = y;
-
-    if (this->parent)
-    {
-        Point parPos = this->parent->getAbsPosition();
-        x += parPos.x;
-        y += parPos.y;
-    }
-
-    this->setAbsPosition(x, y);
 }
 
 void RUIComponent::setFocus(bool focus)

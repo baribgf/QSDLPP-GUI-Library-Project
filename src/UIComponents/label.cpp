@@ -295,7 +295,7 @@ void Label::drawImage()
     SDL_Surface *imgSurface = IMG_Load(this->imgPath.c_str());
     ENSURE_NOT(imgSurface, NULL);
 
-    Point pos = this->getPosition();
+    Point pos = this->getAbsPosition();
     Dimension size = this->getSize();
     SDL_Rect destRect;
     destRect.x = imgX;

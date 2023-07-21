@@ -7,9 +7,14 @@ int main(int argc, char const *argv[])
 {
     Application app(argc, argv);
     Window win("Example", 600, 400);
-    Frame f(nullptr, 560, 360);
-    f.setBordersVisible(true);
-    f.setPosition(20, 20);
+    Frame f(nullptr, 580, 380);
+    f.setBg({BLUE});
+    f.setPosition(10, 10);
+
+    Button btn(&f, "Click Me", 120, 30);
+    btn.setPosition(10, 10);
+
+    f.add(&btn);
 
     win.addFrame(&f);
     app.setWindow(&win);
