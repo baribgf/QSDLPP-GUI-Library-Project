@@ -17,6 +17,7 @@ Event Event::toEvent(SDL_Event e)
 {
 	Event event;
 	event.button.type = e.button.type;
+	event.button.button = e.button.button;
 	event.button.x = e.button.x;
 	event.button.y = e.button.y;
 	event.type = e.type;
@@ -36,8 +37,9 @@ SDL_Event Event::toSDLEvent()
 	SDL_Event e;
 	SDL_zero(e);
 	e.type = this->type;
-	e.button.type = this->button.type;
-	if (this->button.type)
+	e.button.type = this->type;
+	e.button.button = this->button.button;
+	if (e.button.type)
 	{
 		e.button.x = this->button.x;
 		e.button.y = this->button.y;

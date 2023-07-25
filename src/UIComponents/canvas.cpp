@@ -3,6 +3,7 @@
 Canvas::Canvas(UIComponent *parent, Uint16 width, Uint16 height) : RUIComponent(parent, width, height)
 {
     this->drawColor = {BLACK};
+    this->fill({0, 0, 0, 0});
 }
 
 Color Canvas::getDrawColor()

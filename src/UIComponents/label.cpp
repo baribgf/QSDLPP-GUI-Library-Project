@@ -56,7 +56,7 @@ Uint8 Label::getTextSize()
     return this->textSize;
 }
 
-Align Label::getAlign()
+Align Label::getTextAlign()
 {
     return this->textAlign;
 }
@@ -137,19 +137,19 @@ void Label::setText(string text)
 {
     this->text = text;
     this->update();
-    this->setTextAlign(this->getAlign());
+    this->setTextAlign(this->getTextAlign());
 }
 
 void Label::update()
 {
     this->fill(this->fillColor);
 
-    this->drawBorders();
-
     if (this->imgPath.length() > 0)
         this->drawImage();
 
     this->drawText();
+
+    this->drawBorders();
 }
 
 void Label::drawText()

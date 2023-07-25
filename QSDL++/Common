@@ -42,6 +42,26 @@ using namespace std;
 #define GREEN 0, 255, 0, 255
 #define BLUE 0, 0, 255, 255
 
+typedef struct
+{
+	int w;
+	int h;
+} Dimension;
+
+typedef struct
+{
+	int x;
+	int y;
+} Point;
+
+typedef struct
+{
+	Uint8 r;
+	Uint8 g;
+	Uint8 b;
+	Uint8 a;
+} Color;
+
 int randint(int min, int max);
 int pointsToPixels(int points);
 int pixelsToPoints(int pixels);
@@ -54,6 +74,8 @@ void delay(Uint32 ms);
 string exec(const char *cmd);
 
 Uint64 getTicks();
+
+Point getMouseCoords();
 
 enum WindowFlags
 {
@@ -82,26 +104,6 @@ enum WindowFlags
     WINDOW_METAL = SDL_WINDOW_METAL,
     WINDOW_INPUT_GRABBED = SDL_WINDOW_INPUT_GRABBED
 };
-
-typedef struct
-{
-	int w;
-	int h;
-} Dimension;
-
-typedef struct
-{
-	int x;
-	int y;
-} Point;
-
-typedef struct
-{
-	Uint8 r;
-	Uint8 g;
-	Uint8 b;
-	Uint8 a;
-} Color;
 
 enum Align
 {
@@ -133,48 +135,6 @@ enum Cursor
 };
 
 void setCursor(Cursor cursor);
-
-typedef struct
-{
-	Uint32 type;
-	int x;
-	int y;
-} EventButton;
-
-typedef struct
-{
-	Uint32 type;
-} EventKey;
-
-typedef struct
-{
-	Uint32 type;
-	Sint32 mouseX;
-	Sint32 mouseY;
-	int x;
-	int y;
-} EventWheel;
-
-enum EventType
-{
-	MOUSE_DOWN = SDL_MOUSEBUTTONDOWN,
-	MOUSE_UP = SDL_MOUSEBUTTONDOWN,
-	MOUSE_MOTION = SDL_MOUSEMOTION,
-	MOUSE_WHEEL = SDL_MOUSEWHEEL,
-	KEY_PRESS = SDL_KEYDOWN,
-	KEY_RELEASE = SDL_KEYUP,
-	WINDOW_RESIZE = SDL_WINDOWEVENT_RESIZED,
-	QUIT = SDL_QUIT,
-	USER_EVENT = SDL_USEREVENT,
-	TEXTINPUT = SDL_TEXTINPUT
-};
-
-enum EventButtonCode
-{
-	LEFT_BUTTON = SDL_BUTTON_LEFT,
-	RIGHT_BUTTON = SDL_BUTTON_RIGHT,
-	MIDDLE_BUTTON = SDL_BUTTON_MIDDLE
-};
 
 enum KeyCode
 {

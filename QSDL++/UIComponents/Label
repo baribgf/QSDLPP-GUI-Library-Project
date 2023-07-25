@@ -41,7 +41,7 @@ public:
     Color getFg();
     Color getBg();
     Uint8 getTextSize();
-    Align getAlign();
+    Align getTextAlign();
     Color getBordersColor();
     Dimension getImageSize();
 

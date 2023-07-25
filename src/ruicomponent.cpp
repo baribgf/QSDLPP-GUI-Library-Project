@@ -46,6 +46,20 @@ bool RUIComponent::hasFocus()
     return this->focus;
 }
 
+void RUIComponent::setPosition(int x, int y)
+{
+    this->x = x;
+    this->y = y;
+
+    if (this->parent)
+    {
+        x += this->parent->getAbsPosition().x;
+        y += this->parent->getAbsPosition().y;
+    }
+
+    this->setAbsPosition(x, y);
+}
+
 void RUIComponent::setFocus(bool focus)
 {
     if (focus)

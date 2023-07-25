@@ -7,16 +7,21 @@ int main(int argc, char const *argv[])
 {
     Application app(argc, argv);
     Window win("Example", 600, 400);
-    Frame f(nullptr, 580, 380);
-    f.setBg({BLUE});
-    f.setPosition(10, 10);
+    Frame f1(nullptr, 580, 380);
+    Frame f2(&f1, 500, 300);
+    f1.setBg({BLUE});
+    f1.setPosition(10, 10);
+    f2.setBg({RED});
+    f2.setPosition(20, 20);
 
-    Button btn(&f, "Click Me", 120, 30);
-    btn.setPosition(10, 10);
+    Button btn1(&f2, "Click Me", 120, 30);
+    btn1.setPosition(10, 10);
 
-    f.add(&btn);
+    f2.add(&btn1);
 
-    win.addFrame(&f);
+    f1.add(&f2);
+
+    win.addFrame(&f1);
     app.setWindow(&win);
     app.exec();
     return 0;

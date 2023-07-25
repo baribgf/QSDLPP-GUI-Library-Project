@@ -2,6 +2,8 @@
 
 UIComponent::UIComponent(Uint16 width, Uint16 height)
 {
+    this->absX = 0;
+    this->absY = 0;
     this->fillColor = {WHITE};
     this->mouseEntered = false;
     this->mousePressed = false;

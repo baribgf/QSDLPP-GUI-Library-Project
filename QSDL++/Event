@@ -7,6 +7,49 @@
     #include "Common"
 #endif
 
+typedef struct
+{
+	Uint32 type;
+	Uint8 button;
+	int x;
+	int y;
+} EventButton;
+
+typedef struct
+{
+	Uint32 type;
+} EventKey;
+
+typedef struct
+{
+	Uint32 type;
+	Sint32 mouseX;
+	Sint32 mouseY;
+	int x;
+	int y;
+} EventWheel;
+
+enum EventType
+{
+	MOUSE_DOWN = SDL_MOUSEBUTTONDOWN,
+	MOUSE_UP = SDL_MOUSEBUTTONDOWN,
+	MOUSE_MOTION = SDL_MOUSEMOTION,
+	MOUSE_WHEEL = SDL_MOUSEWHEEL,
+	KEY_PRESS = SDL_KEYDOWN,
+	KEY_RELEASE = SDL_KEYUP,
+	WINDOW_RESIZE = SDL_WINDOWEVENT_RESIZED,
+	QUIT = SDL_QUIT,
+	USER_EVENT = SDL_USEREVENT,
+	TEXTINPUT = SDL_TEXTINPUT
+};
+
+enum EventButtonCode
+{
+	LEFT_BUTTON = SDL_BUTTON_LEFT,
+	RIGHT_BUTTON = SDL_BUTTON_RIGHT,
+	MIDDLE_BUTTON = SDL_BUTTON_MIDDLE
+};
+
 class Event
 {
 public:

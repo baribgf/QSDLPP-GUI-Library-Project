@@ -65,6 +65,13 @@ Uint64 getTicks()
     return SDL_GetTicks64();
 }
 
+Point getMouseCoords()
+{
+    Point p;
+    SDL_GetGlobalMouseState(&p.x, &p.y);
+    return p;
+}
+
 string exec(const char *cmd)
 {
     array<char, 128> buffer;

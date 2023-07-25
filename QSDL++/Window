@@ -31,7 +31,7 @@ protected:
     Uint32 flags;
     vector<Frame *> frames;
     queue<Frame *> framesQueue;
-    bool maximized, minimized, bordered, alwaysOnTop, resizable;
+    bool maximized, minimized, bordered, alwaysOnTop, resizable, focusChanged;
 
     virtual void onWindowResized(Event e);
     virtual void onMousePressed(Event e);
