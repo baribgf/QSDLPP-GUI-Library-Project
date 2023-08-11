@@ -36,6 +36,8 @@ protected:
     virtual void onWindowResized(Event e);
     virtual void onMousePressed(Event e);
     virtual void onMouseReleased(Event e);
+    virtual void onKeyPressed(Event e);
+    virtual void onKeyReleased(Event e);
 
 public:
     // int argc;

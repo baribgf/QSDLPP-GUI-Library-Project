@@ -34,9 +34,17 @@ Color UIComponent::getFillColor()
     return this->fillColor;
 }
 
-SDL_Surface *UIComponent::getSDLSurface()
+SDL_Surface *UIComponent::getSurface()
 {
     return this->baseSurface;
+}
+
+SDL_Surface *UIComponent::copySurface()
+{
+    SDL_Surface *newSurface = SDL_CreateRGBSurfaceWithFormat(this->baseSurface->flags, this->baseSurface->w, this->baseSurface->h, this->baseSurface->format->BitsPerPixel, this->baseSurface->format->format);
+    ENSURE_NOT(newSurface, NULL);
+    SDL_BlitSurface(this->baseSurface, NULL, newSurface, NULL);
+    return newSurface;
 }
 
 Dimension UIComponent::getSize()
@@ -52,6 +60,11 @@ Point UIComponent::getPosition()
 Point UIComponent::getAbsPosition()
 {
     return {this->absX, this->absY};
+}
+
+void UIComponent::setSurface(SDL_Surface *surface)
+{
+    this->baseSurface = surface;
 }
 
 void UIComponent::setSize(Uint16 width, Uint16 height)

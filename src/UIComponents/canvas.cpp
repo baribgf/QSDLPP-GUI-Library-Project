@@ -3,7 +3,8 @@
 Canvas::Canvas(UIComponent *parent, Uint16 width, Uint16 height) : RUIComponent(parent, width, height)
 {
     this->drawColor = {BLACK};
-    this->fill({0, 0, 0, 0});
+    this->fillColor = {0, 0, 0, 0};
+    this->fill(this->getFillColor());
 }
 
 Color Canvas::getDrawColor()
@@ -134,6 +135,11 @@ void Canvas::drawPoint(int x, int y)
         // Set the pixel color
         *pixel = SDL_MapRGBA(surface->format, this->drawColor.r, this->drawColor.g, this->drawColor.b, this->drawColor.a);
     }
+}
+
+void Canvas::rotate()
+{
+    this->baseSurface = rotatedSurface(this->baseSurface);
 }
 
 Canvas::~Canvas()

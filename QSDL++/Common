@@ -69,6 +69,8 @@ int pixelsToPoints(int pixels);
 void drawLineToSurface(SDL_Surface *surface, int x1, int y1, int x2, int y2,
 		Uint32 color);
 
+SDL_Surface *rotatedSurface(SDL_Surface *surface);
+
 void delay(Uint32 ms);
 
 string exec(const char *cmd);

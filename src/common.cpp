@@ -55,6 +55,28 @@ void drawLineToSurface(SDL_Surface *surface, int x1, int y1, int x2, int y2, Uin
     }
 }
 
+SDL_Surface *rotatedSurface(SDL_Surface *surface)
+{
+    // Create a new surface with swapped width and height
+    SDL_Surface *rotatedSurfacePtr = SDL_CreateRGBSurfaceWithFormat(0, surface->h, surface->w, surface->format->BitsPerPixel, surface->format->format);
+
+    ENSURE_NOT(rotatedSurface, NULL);
+
+    // Loop through the pixels and copy them to the rotated surface
+    for (int y = 0; y < surface->h; ++y)
+    {
+        for (int x = 0; x < surface->w; ++x)
+        {
+            Uint32 pixel = ((Uint32 *)surface->pixels)[y * surface->pitch / 4 + x];
+            int newX = y; // Swap x and y coordinates
+            int newY = surface->w - x - 1;
+            ((Uint32 *)rotatedSurfacePtr->pixels)[newY * rotatedSurfacePtr->pitch / 4 + newX] = pixel;
+        }
+    }
+
+    return rotatedSurfacePtr;
+}
+
 void delay(Uint32 ms)
 {
     SDL_Delay(ms);

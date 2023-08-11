@@ -48,6 +48,14 @@ void Window::handleEvents()
 	{
 		this->onMouseReleased(e);
 	}
+	else if (event.type == SDL_KEYDOWN)
+	{
+		this->onKeyPressed(e);
+	}
+	else if (event.type == SDL_KEYUP)
+	{
+		this->onKeyReleased(e);
+	}
 }
 
 void Window::mainloop()
@@ -299,7 +307,7 @@ void Window::renderComponent(UIComponent *uicomponent)
 	SDL_Texture *texture = SDL_CreateTexture(this->mainRenderer, SDL_PIXELFORMAT_RGBA32, SDL_RENDERER_TARGETTEXTURE, uicomponent->getSize().w, uicomponent->getSize().h);
 	ENSURE_NOT(texture, NULL);
 
-	ENSURE(SDL_UpdateTexture(texture, NULL, uicomponent->getSDLSurface()->pixels, uicomponent->getSDLSurface()->pitch), 0);
+	ENSURE(SDL_UpdateTexture(texture, NULL, uicomponent->getSurface()->pixels, uicomponent->getSurface()->pitch), 0);
 
 	int srcx = 0;
 	int srcy = 0;
@@ -368,13 +376,13 @@ void Window::renderFrame(Frame *frame)
 			SDL_Rect rsrc = {srcx, srcy, srcw, srch};
 			SDL_Rect rdest = {destx, desty, destw, desth};
 
-			ENSURE(SDL_BlitSurface(childFrame->getSDLSurface(), &rsrc, frame->getSDLSurface(), &rdest), 0);
+			ENSURE(SDL_BlitSurface(childFrame->getSurface(), &rsrc, frame->getSurface(), &rdest), 0);
 		}
 		else
 		{
 			SDL_Rect rdest = {childComp->getPosition().x, childComp->getPosition().y, childComp->getSize().w, childComp->getSize().h};
 			SDL_Rect rsrc = {0, 0, childComp->getSize().w, childComp->getSize().h};
-			ENSURE(SDL_BlitSurface(childComp->getSDLSurface(), &rsrc, frame->getSDLSurface(), &rdest), 0);
+			ENSURE(SDL_BlitSurface(childComp->getSurface(), &rsrc, frame->getSurface(), &rdest), 0);
 		}
 
 		if (childComp->hasFocus() && childComp != this->focusedComponent)
@@ -468,5 +476,13 @@ void Window::onMousePressed(Event e)
 }
 
 void Window::onMouseReleased(Event e)
+{
+}
+
+void Window::onKeyPressed(Event e)
+{
+}
+
+void Window::onKeyReleased(Event e)
 {
 }

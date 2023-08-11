@@ -27,6 +27,7 @@ public:
     void drawFilledArc(int x, int y, int radius, int startAngle, int endAngle);
     void drawRect(int x, int y, int width, int height);
     void drawPoint(int x, int y);
+    virtual void rotate();
 
     void setDrawColor(Color color);
 };

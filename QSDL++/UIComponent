@@ -42,12 +42,14 @@ public:
     virtual Point getPosition();
     Point getAbsPosition();
     Color getFillColor();
-    virtual SDL_Surface *getSDLSurface();
+    virtual SDL_Surface *getSurface();
+    SDL_Surface *copySurface();
 
     virtual void setSize(Uint16 width, Uint16 height);
     void setVisible(bool visible);
     virtual void setPosition(int x, int y);
     void setAbsPosition(int x, int y);
+    void setSurface(SDL_Surface *surface);
 
     /**
      * Fill the entire surface.
